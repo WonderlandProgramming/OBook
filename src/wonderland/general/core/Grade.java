@@ -6,11 +6,20 @@ import java.util.List;
 
 import wonderland.general.ConLibrary;
 
+/**
+ * Represents a normal grade.
+ * 
+ * @author Lukas Kannenberg
+ * @since 15-10-2015
+ * @version 15-10-2015 01:23
+ *
+ */
 public class Grade {
 	
 	private String name;
 	private String shortName;
 	private List<Book> books = new ArrayList<>();
+	private List<BookGroup> bookGroups = new ArrayList<>();
 	
 	/**
 	 * Constructs a new BookCategory.
@@ -37,11 +46,14 @@ public class Grade {
 	 * 
 	 * @param name the name
 	 * @param shortName the short name
-	 * @param books the books assigned to this grade
+	 * @param books the books to be added
+	 * @param boookGroup the bookGroup to be added
 	 */
-	public Grade(String name, String shortName, Book[] books) {
+	public Grade(String name, String shortName, Book[] books, BookGroup[] bookGroups) {
 		this.name = name;
 		this.shortName = shortName;
+		if(books != null) this.books = Arrays.asList(books);
+		if(bookGroups != null) this.bookGroups = Arrays.asList(bookGroups);
 	}
 	
 	/**
@@ -158,8 +170,60 @@ public class Grade {
 		if(books.contains(book)) books.remove(book);
 	}
 	
+	/**
+	 * @return the the books
+	 */
+	public BookGroup[] getBookGroups() {
+		return bookGroups.toArray(new BookGroup[0]);
+	}
+
+	/**
+	 * @param books the books to set
+	 */
+	public void setBookGroups(BookGroup[] bookGroup) {
+		if(bookGroups != null) this.bookGroups = Arrays.asList(bookGroup);
+	}
+	
+	/**
+	 * @return true, if the list contains any books, otherwise false
+	 */
+	public boolean hasBookGroups() {
+		if(!bookGroups.isEmpty()) return true;
+		return false;
+	}
+	
+	/**
+	 * Adds a book to the current list.
+	 * 
+	 * @param book the book
+	 */
+	public void addBookGroup(BookGroup bookGroup) {
+		bookGroups.add(bookGroup);
+	}
+	
+	/**
+	 * Adds books to the current list.
+	 * 
+	 * @param book the book
+	 */
+	public void addBookGroups(BookGroup[] bookGroups) {
+		if(bookGroups != null) {
+			List<BookGroup> temp = Arrays.asList(bookGroups);
+			this.bookGroups.addAll(temp);
+		}	
+	}
+	
+	/**
+	 * Removes a book from the list.
+	 * 
+	 * @param book the book to remove
+	 */
+	public void removeBookGroup(BookGroup bookGroup) {
+		books.remove(bookGroup);
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("Grade[name=%s, shortName=%s, books=%s]", name, shortName, books.toString());
+		return String.format("Grade[name=%s, shortName=%s, books=%s, bookGroups=%s]", name, shortName, books.toString(), bookGroups.toString());
 	}
 }

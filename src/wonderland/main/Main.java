@@ -3,7 +3,9 @@ package wonderland.main;
 import wonderland.components.reader.ObjectQueue;
 import wonderland.general.core.Book;
 import wonderland.general.core.BookBuilder;
+import wonderland.general.core.BookGroup;
 import wonderland.general.core.Category;
+import wonderland.general.core.Grade;
 import wonderland.general.core.Subject;
 import wonderland.search.BookSearch;
 import wonderland.search.SubjectSearch;
@@ -54,9 +56,15 @@ public class Main {
 		Book b4 = new BookBuilder("005").withName("Mathe 10").withSubject(SubjectSearch.getFromShortName("MA")).built();
 		b4.addToList();
 		
+		Grade g = new Grade("Klasse 5", "K5");
+		g.addBook(b);
+		Book[] bks = { b1, b2, b3 };
+		g.addBookGroup(new BookGroup("Sonstiges", bks));
+		System.out.println(g.toString());
+		
 		BookCriteria[] crit = { BookCriteria.SUBJECT };
 		
-		Book[] books = BookSearch.getBooks("MA", crit);
+		Book[] books = BookSearch.getBooks("Mathe", crit);
 		for (Book book : books) {
 			System.out.println(book.toString());
 		}

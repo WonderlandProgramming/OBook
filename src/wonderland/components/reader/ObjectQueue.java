@@ -3,7 +3,7 @@ package wonderland.components.reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import wonderland.components.server.ServerControl;
+import wonderland.components.ClientControl;
 import wonderland.general.core.Order;
 
 public class ObjectQueue {
@@ -35,8 +35,8 @@ public class ObjectQueue {
 			public void run() {
 				isRunning = true;
 				while (isRunning) {
-					if(ServerControl.hasOrders() && orders.size() < maxQueueSize) {
-						Order order = ServerControl.getNextOrder();
+					if(ClientControl.hasOrders() && orders.size() < maxQueueSize) {
+						Order order = ClientControl.getNextOrder();
 						if(order != null) {
 							orders.add(order);
 							controller.addOrder(order);

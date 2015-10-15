@@ -59,13 +59,17 @@ public abstract class Page {
 		public void handle(Request request, Response response) throws Exception {
 			Map<String, String> currentUser = request.cookies();
 			String UIDinCookies = currentUser.get("OBOOKUID");
-
-			if (UIDinCookies == null)
-				response.redirect("/login");
-			if (WebServer.getUser(UIDinCookies) == null
-					|| WebServer.getUser(UIDinCookies).getLoginLevel().getLevel() >= Page.loginLevel.getLevel()) {
-				response.redirect("/", 403);
+			
+			if(Page.loginLevel.getLevel() > LoginLevel.All.getLevel()){
+				if (UIDinCookies == null)
+					response.redirect("/login");
+				if (WebServer.getUser(UIDinCookies) == null
+						|| WebServer.getUser(UIDinCookies).getLoginLevel().getLevel() >= Page.loginLevel.getLevel()) {
+					response.redirect("/", 403);
+				}
 			}
+
+			
 		}
 	}
 
@@ -92,7 +96,8 @@ public abstract class Page {
 					response.redirect(redirectAfterPost);
 				}
 			}
-			return null;
+			//TODO change the values after the plot was send
+			return HTMLUtils.readHTMLFile(htmlPath);
 		}
 	}
 

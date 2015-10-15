@@ -14,7 +14,6 @@ public class BookItem {
 
 	private Book book;
 	private Grade grade;
-	private boolean preset;
 	
 	/**
 	 * Constructs a new Book Item.
@@ -25,14 +24,13 @@ public class BookItem {
 	public BookItem(Book book, Grade grade, boolean preset) {
 		this.book = book;
 		this.grade = grade;
-		this.preset = preset;
 	}
 	
 	/**
 	 * @return the color for this item
 	 */
 	public Color getItemColor() {
-		return ColorManager.getResultingColor(grade, book);
+		return ColorManager.getResultingColor(grade, this);
 	}
 
 	/**
@@ -76,23 +74,9 @@ public class BookItem {
 	public boolean hasGrade() {
 		return getGrade() != null;
 	}
-
-	/**
-	 * @return the preset
-	 */
-	public boolean isPreset() {
-		return preset;
-	}
-
-	/**
-	 * @param preset the preset to set
-	 */
-	public void setPreset(boolean preset) {
-		this.preset = preset;
-	}
 	
 	@Override
 	public String toString() {
-		return String.format("BookItem[book=%s, grade=%s, preset=%s]", book.toString(), grade.toString(), preset);
+		return String.format("BookItem[book=%s, grade=%s]", book.toString(), grade.toString());
 	}
 }

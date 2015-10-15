@@ -84,7 +84,7 @@ public class Main {
 		}
 		
 		// ColorManager Test
-		System.out.println(ColorManager.getResultingColor(g, b1));
+		System.out.println(ColorManager.getResultingColor(g, bi));
 		
 	}
 

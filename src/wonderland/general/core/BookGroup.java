@@ -17,7 +17,6 @@ public class BookGroup {
 
 	private String name;
 	private Color color;
-	private boolean active;
 	private List<BookItem> books = new ArrayList<>();
 	
 	// Form Settings
@@ -86,24 +85,10 @@ public class BookGroup {
 	}
 
 	/**
-	 * @return the active
-	 */
-	public boolean isActive() {
-		return active;
-	}
-
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	/**
 	 * @return the books
 	 */
-	public Book[] getBooks() {
-		return books.toArray(new Book[0]);
+	public BookItem[] getBookItems() {
+		return books.toArray(new BookItem[0]);
 	}
 
 	/**
@@ -119,9 +104,16 @@ public class BookGroup {
 	 * @param book the book
 	 * @return true, if the book is contained in the book group
 	 */
-	public boolean containsBook(Book book) {
+	public boolean containsBookItem(BookItem book) {
 		if(books.contains(book)) return true;
 		return false;
+	}
+	
+	/**
+	 * @return true if the list contains at least one item
+	 */
+	public boolean hasBooks() {
+		return books != null && books.size() > 0;
 	}
 
 	/**
@@ -147,6 +139,6 @@ public class BookGroup {
 	
 	@Override
 	public String toString() {
-		return String.format("BookGroup[name=%s, color=%s, active=%s, books=%s, minimum=%s]", name, color.toString(), active, books.toString(), minimumSelected);
+		return String.format("BookGroup[name=%s, color=%s, books=%s, minimum=%s]", name, color.toString(), books.toString(), minimumSelected);
 	}
 }

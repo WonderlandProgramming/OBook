@@ -12,12 +12,13 @@ public class ColorManager {
 	 * @param grade the grade
 	 * @return the resulting color if existing, otherwise null
 	 */
-	public static Color getResultingColor(Grade grade, Book book) {
+	public static Color getResultingColor(Grade grade, BookItem bookItem) {
 		// Priority: BookGroups > Subjects > Categories
+		Book book = bookItem.getBook();
 		if (grade.hasBookGroups()) {
 			BookGroup[] bookGroups = grade.getBookGroups();
 			for (BookGroup bookGroup : bookGroups) {
-				if (bookGroup.hasColor() && bookGroup.containsBook(book)) {
+				if (bookGroup.hasColor() && bookGroup.containsBookItem(bookItem)) {
 					return bookGroup.getColor();
 				}
 			}

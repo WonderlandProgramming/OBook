@@ -2,8 +2,9 @@ package main.java.wonderland.webServer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Random;
 
-class FileUtils {
+public class HTMLUtils {
 	public static String readHTMLFile(String path) {
 		String builder = "";
 
@@ -21,5 +22,16 @@ class FileUtils {
 			e.printStackTrace();
 		}
 		return builder;
+	}
+	
+	public static String generateUserID(){
+		char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < 32; i++) {
+		    char c = chars[random.nextInt(chars.length)];
+		    sb.append(c);
+		}
+		return sb.toString();
 	}
 }

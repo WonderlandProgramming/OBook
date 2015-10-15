@@ -94,6 +94,7 @@ public abstract class Page {
 				
 				if(redirectAfterPost != null){
 					response.redirect(redirectAfterPost);
+					return null;
 				}
 			}
 			//TODO change the values after the plot was send

@@ -1,0 +1,6 @@
+ZU PRÜFEN:
+- was passiert, wenn eine BookGroup bspw. 2 BookItems als Preset ausgewählt hat, 
+aber die minimale Anzahl der BookGroup auf 1 gesetzt ist?
+>>> 2 Bücher sind in der ausgewählten Liste, aber nach einem sollen die restlichen Bücher schon verschwinden.
+>>> werden Bücher wieder entfernt (in die vorgeschlagene Liste) werden Sie dann erst wieder angezeigt,
+wenn das minimum unterschritten wurde. Problem???

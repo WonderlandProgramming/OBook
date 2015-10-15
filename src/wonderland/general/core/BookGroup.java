@@ -80,7 +80,6 @@ public class BookGroup {
 		this.color = color;
 	}
 	
-	
 	/**
 	 * @return true, if a color has been set
 	 */
@@ -114,6 +113,17 @@ public class BookGroup {
 	 */
 	public void setBooks(List<Book> books) {
 		this.books = books;
+	}
+	
+	/**
+	 * Validates if a book of contained in this book group.
+	 * 
+	 * @param book the book
+	 * @return true, if the book is contained in the book group
+	 */
+	public boolean containsBook(Book book) {
+		if(books.contains(book)) return true;
+		return false;
 	}
 
 	/**

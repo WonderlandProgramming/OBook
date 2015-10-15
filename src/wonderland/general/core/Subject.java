@@ -1,5 +1,7 @@
 package wonderland.general.core;
 
+import java.awt.Color;
+
 import wonderland.general.ConLibrary;
 
 /**
@@ -15,6 +17,7 @@ public class Subject {
 	private String name;
 	private String shortName;
 	private Category category;
+	private Color color;
 	
 	/**
 	 * Constructs a new BookCategory.
@@ -41,11 +44,14 @@ public class Subject {
 	 * 
 	 * @param name the name
 	 * @param shortName the short name
+	 * @param category the category
+	 * @param color the color
 	 */
-	public Subject(String name, String shortName, Category category) {
+	public Subject(String name, String shortName, Category category, Color color) {
 		this.name = name;
 		this.shortName = shortName;
 		this.category = category;
+		this.color = color;
 	}
 	
 	/**
@@ -132,6 +138,27 @@ public class Subject {
 		return false;
 	}
 	
+	/**
+	 * @return the color
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	/**
+	 * @return true, if the color has been set
+	 */
+	public boolean hasColor() {
+		return getColor() != null;
+	}
+
 	@Override
 	public String toString() {
 		String category = null;

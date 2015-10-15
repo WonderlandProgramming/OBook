@@ -1,10 +1,13 @@
 package wonderland.main;
 
+import java.awt.Color;
+
 import wonderland.components.reader.ObjectQueue;
 import wonderland.general.core.Book;
 import wonderland.general.core.BookBuilder;
 import wonderland.general.core.BookGroup;
 import wonderland.general.core.Category;
+import wonderland.general.core.ColorManager;
 import wonderland.general.core.Grade;
 import wonderland.general.core.Subject;
 import wonderland.search.BookSearch;
@@ -23,28 +26,31 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Category c = new Category("Naturwissenschaften", "NW");
+		// Creating Categories
+		Category c = new Category("Naturwissenschaften", "NW", new Color(16, 78, 89));
 		c.addToList();
 		Category c1 = new Category("Sprachen", "SP");
 		c1.addToList();
-		Category c2 = new Category("Religion", "REL");
+		Category c2 = new Category("Religion", "REL", new Color(122, 78, 89));
 		c2.addToList();
 		Category c3 = new Category("Sonstiges", "SNG");
 		c3.addToList();
 		
-		Subject s = new Subject("Mathe", "MA", c);
+		// Creating Subjects
+		Subject s = new Subject("Mathe", "MA", c, null);
 		s.addToList();
-		Subject s1 = new Subject("Englisch", "EN", c1);
+		Subject s1 = new Subject("Englisch", "EN", c1, null);
 		s1.addToList();
-		Subject s2 = new Subject("Deutsch", "DE", c1);
+		Subject s2 = new Subject("Deutsch", "DE", c1, new Color(10, 10, 10));
 		s2.addToList();
-		Subject s3 = new Subject("Sport", "SP", c3);
+		Subject s3 = new Subject("Sport", "SP", c3, new Color(10, 10, 10));
 		s3.addToList();
-		Subject s4 = new Subject("Kath. Religion", "KREL", c2);
+		Subject s4 = new Subject("Kath. Religion", "KREL", c2, new Color(10, 10, 10));
 		s4.addToList();
-		Subject s5 = new Subject("Evang. Religion", "EREL", c2);
+		Subject s5 = new Subject("Evang. Religion", "EREL", c2, new Color(10, 10, 10));
 		s5.addToList();
 		
+		// Creating Books
 		Book b = new BookBuilder("001").withName("Mathe 5").withSubject(SubjectSearch.getFromShortName("MA")).built();
 		b.addToList();
 		Book b1 = new BookBuilder("002").withName("Deutsch 6").withSubject(SubjectSearch.getFromShortName("DE")).built();
@@ -56,12 +62,14 @@ public class Main {
 		Book b4 = new BookBuilder("005").withName("Mathe 10").withSubject(SubjectSearch.getFromShortName("MA")).built();
 		b4.addToList();
 		
+		// Creating Grades / Book Groups
 		Grade g = new Grade("Klasse 5", "K5");
 		g.addBook(b);
 		Book[] bks = { b1, b2, b3 };
-		g.addBookGroup(new BookGroup("Sonstiges", bks));
+		g.addBookGroup(new BookGroup("Sonstiges", bks, new Color(122, 78, 89), 1, 1));
 		System.out.println(g.toString());
 		
+		// Search Engine Test
 		BookCriteria[] crit = { BookCriteria.SUBJECT };
 		
 		Book[] books = BookSearch.getBooks("Mathe", crit);
@@ -69,7 +77,11 @@ public class Main {
 			System.out.println(book.toString());
 		}
 		
+		// Object Queue Test
 		new ObjectQueue(null, 6, 1000);
+		
+		// ColorManager Test
+		System.out.println(ColorManager.getResultingColor(g, b1));
 		
 	}
 

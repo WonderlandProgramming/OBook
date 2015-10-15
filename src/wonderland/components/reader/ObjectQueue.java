@@ -8,7 +8,7 @@ import wonderland.general.core.Order;
 
 public class ObjectQueue {
 
-	private PanelController controller;
+	private ReaderController controller;
 	private int maxQueueSize;
 	private int updateRate;
 	private List<Order> orders = new ArrayList<>();
@@ -21,7 +21,7 @@ public class ObjectQueue {
 	 * @param maxQueueSize
 	 * @param updateRate
 	 */
-	public ObjectQueue(PanelController controller, int maxQueueSize, int updateRate) {
+	public ObjectQueue(ReaderController controller, int maxQueueSize, int updateRate) {
 		start();
 		this.controller = controller;
 		this.maxQueueSize = maxQueueSize;

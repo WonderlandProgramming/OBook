@@ -2,7 +2,6 @@ package wonderland.main;
 
 import java.awt.Color;
 
-import wonderland.components.reader.ObjectQueue;
 import wonderland.general.core.Book;
 import wonderland.general.core.BookBuilder;
 import wonderland.general.core.BookGroup;

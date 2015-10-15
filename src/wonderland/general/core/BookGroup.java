@@ -18,11 +18,10 @@ public class BookGroup {
 	private String name;
 	private Color color;
 	private boolean active;
-	private List<Book> books = new ArrayList<>();
+	private List<BookItem> books = new ArrayList<>();
 	
 	// Form Settings
 	private int minimumSelected = -1;
-	private int maximumSelected = -1;
 	
 	/**
 	 * Main Constructor.
@@ -30,7 +29,7 @@ public class BookGroup {
 	 * @param name the name
 	 * @param books the books
 	 */
-	public BookGroup(String name, Book[] books) {
+	public BookGroup(String name, BookItem[] books) {
 		this.name = name;
 		this.color = new Color(255, 255, 255);
 		if(books != null) this.books = Arrays.asList(books);
@@ -44,12 +43,11 @@ public class BookGroup {
 	 * @param minimum the minimum
 	 * @param maximum the maximum
 	 */
-	public BookGroup(String name, Book[] books, Color color, int minimum, int maximum) {
+	public BookGroup(String name, BookItem[] books, Color color, int minimum) {
 		this.name = name;
 		this.color = color;
 		if(books != null) this.books = Arrays.asList(books);
 		this.minimumSelected = minimum;
-		this.maximumSelected = maximum;
 	}
 	
 	/**
@@ -111,7 +109,7 @@ public class BookGroup {
 	/**
 	 * @param books the books to set
 	 */
-	public void setBooks(List<Book> books) {
+	public void setBooks(List<BookItem> books) {
 		this.books = books;
 	}
 	
@@ -146,30 +144,9 @@ public class BookGroup {
 	public boolean hasMinimumSelected() {
 		return getMinimumSelected() != -1;
 	}
-
-	/**
-	 * @return the maximumSelected
-	 */
-	public int getMaximumSelected() {
-		return maximumSelected;
-	}
-
-	/**
-	 * @param maximumSelected the maximumSelected to set
-	 */
-	public void setMaximumSelected(int maximumSelected) {
-		this.maximumSelected = maximumSelected;
-	}
-	
-	/**
-	 * @return true, if a maximum has been set
-	 */
-	public boolean hasMaximumSelected() {
-		return getMaximumSelected() != -1;
-	}
 	
 	@Override
 	public String toString() {
-		return String.format("BookGroup[name=%s, color=%s, active=%s, books=%s, minimum=%s, maximum=%s]", name, color.toString(), active, books.toString(), minimumSelected, maximumSelected);
+		return String.format("BookGroup[name=%s, color=%s, active=%s, books=%s, minimum=%s]", name, color.toString(), active, books.toString(), minimumSelected);
 	}
 }

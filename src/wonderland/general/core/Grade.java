@@ -18,7 +18,7 @@ public class Grade {
 	
 	private String name;
 	private String shortName;
-	private List<Book> books = new ArrayList<>();
+	private List<BookItem> books = new ArrayList<>();
 	private List<BookGroup> bookGroups = new ArrayList<>();
 	
 	/**
@@ -49,7 +49,7 @@ public class Grade {
 	 * @param books the books to be added
 	 * @param boookGroup the bookGroup to be added
 	 */
-	public Grade(String name, String shortName, Book[] books, BookGroup[] bookGroups) {
+	public Grade(String name, String shortName, BookItem[] books, BookGroup[] bookGroups) {
 		this.name = name;
 		this.shortName = shortName;
 		if(books != null) this.books = Arrays.asList(books);
@@ -121,14 +121,14 @@ public class Grade {
 	/**
 	 * @return the the books
 	 */
-	public Book[] getBooks() {
-		return books.toArray(new Book[0]);
+	public BookItem[] getBookItems() {
+		return books.toArray(new BookItem[0]);
 	}
 
 	/**
 	 * @param books the books to set
 	 */
-	public void setBooks(Book[] books) {
+	public void setBooks(BookItem[] books) {
 		if(books != null) this.books = Arrays.asList(books);
 	}
 	
@@ -145,7 +145,7 @@ public class Grade {
 	 * 
 	 * @param book the book
 	 */
-	public void addBook(Book book) {
+	public void addBookItem(BookItem book) {
 		books.add(book);
 	}
 	
@@ -154,9 +154,9 @@ public class Grade {
 	 * 
 	 * @param book the book
 	 */
-	public void addBooks(Book[] books) {
+	public void addBookItems(BookItem[] books) {
 		if(books != null) {
-			List<Book> temp = Arrays.asList(books);
+			List<BookItem> temp = Arrays.asList(books);
 			this.books.addAll(temp);
 		}	
 	}
@@ -166,7 +166,7 @@ public class Grade {
 	 * 
 	 * @param book the book to remove
 	 */
-	public void removeBook(Book book) {
+	public void removeBook(BookItem book) {
 		if(books.contains(book)) books.remove(book);
 	}
 	
@@ -224,6 +224,6 @@ public class Grade {
 	
 	@Override
 	public String toString() {
-		return String.format("Grade[name=%s, shortName=%s, books=%s, bookGroups=%s]", name, shortName, books.toString(), bookGroups.toString());
+		return String.format("Grade[name=%s, shortName=%s, books=%s, bookGroups=%s]", name, shortName, books.size(), bookGroups.size());
 	}
 }

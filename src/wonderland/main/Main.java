@@ -6,6 +6,7 @@ import wonderland.components.reader.ObjectQueue;
 import wonderland.general.core.Book;
 import wonderland.general.core.BookBuilder;
 import wonderland.general.core.BookGroup;
+import wonderland.general.core.BookItem;
 import wonderland.general.core.Category;
 import wonderland.general.core.ColorManager;
 import wonderland.general.core.Grade;
@@ -64,10 +65,16 @@ public class Main {
 		
 		// Creating Grades / Book Groups
 		Grade g = new Grade("Klasse 5", "K5");
-		g.addBook(b);
-		Book[] bks = { b1, b2, b3 };
-		g.addBookGroup(new BookGroup("Sonstiges", bks, new Color(122, 78, 89), 1, 1));
+		g.addBookItem(new BookItem(b, g, true));
+		BookItem bi = new BookItem(b, g, true);
+		BookItem bi1 = new BookItem(b, g, true);
+		BookItem bi2 = new BookItem(b, g, true);
+		BookItem[] bookItems = { bi, bi1, bi2 };
+		g.addBookGroup(new BookGroup("Sonstiges", bookItems, new Color(122, 78, 89), 1));
 		System.out.println(g.toString());
+		for (BookItem bookItem : g.getBookItems()) {
+			System.out.println(bookItem.toString());
+		}
 		
 		// Search Engine Test
 		BookCriteria[] crit = { BookCriteria.SUBJECT };
@@ -76,9 +83,6 @@ public class Main {
 		for (Book book : books) {
 			System.out.println(book.toString());
 		}
-		
-		// Object Queue Test
-		new ObjectQueue(null, 6, 1000);
 		
 		// ColorManager Test
 		System.out.println(ColorManager.getResultingColor(g, b1));

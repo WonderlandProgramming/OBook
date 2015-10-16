@@ -1,22 +1,15 @@
 package main.java.wonderland.components.reader;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import main.java.wonderland.components.ClientControl;
 import main.java.wonderland.general.core.Order;
 
 public class ObjectQueue {
-
+	
 	private ReaderController controller;
-	private int maxQueueSize;
 	private int updateRate;
-	private List<Order> orders = new ArrayList<>();
 	private boolean isRunning = false;
-
+	
 	/**
-	 * Main Constructor.
-	 * 
 	 * @param panel
 	 * @param maxQueueSize
 	 * @param updateRate
@@ -24,7 +17,6 @@ public class ObjectQueue {
 	public ObjectQueue(ReaderController controller, int maxQueueSize, int updateRate) {
 		start();
 		this.controller = controller;
-		this.maxQueueSize = maxQueueSize;
 		this.updateRate = updateRate;
 	}
 
@@ -35,11 +27,10 @@ public class ObjectQueue {
 			public void run() {
 				isRunning = true;
 				while (isRunning) {
-					if(ClientControl.hasOrders() && orders.size() < maxQueueSize) {
+					if(ClientControl.hasOrders() && controller.getFreePanel() != null) {
 						Order order = ClientControl.getNextOrder();
 						if(order != null) {
-							orders.add(order);
-							controller.addOrder(order);
+							controller.getFreePanel().setOrder(order);
 						}
 					}
 					try {
@@ -61,20 +52,6 @@ public class ObjectQueue {
 	}
 
 	/**
-	 * @return the maxQueueSize
-	 */
-	public int getMaxQueueSize() {
-		return maxQueueSize;
-	}
-
-	/**
-	 * @param maxQueueSize the maxQueueSize to set
-	 */
-	public void setMaxQueueSize(int maxQueueSize) {
-		this.maxQueueSize = maxQueueSize;
-	}
-
-	/**
 	 * @return the updateRate
 	 */
 	public int getUpdateRate() {
@@ -87,18 +64,5 @@ public class ObjectQueue {
 	public void setUpdateRate(int updateRate) {
 		this.updateRate = updateRate;
 	}
-
-	/**
-	 * @return the orders
-	 */
-	public Order[] getOrders() {
-		return orders.toArray(new Order[0]);
-	}
-
-	/**
-	 * @param order the order to remove
-	 */
-	public void removeOrder(Order order) {
-		orders.remove(order);
-	}
+	
 }

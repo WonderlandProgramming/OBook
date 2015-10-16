@@ -7,6 +7,14 @@ import main.java.wonderland.general.core.BookGroup;
 import main.java.wonderland.general.core.BookItem;
 import main.java.wonderland.general.core.Grade;
 
+/**
+ * Controls the given and selected book lists in the writer component.
+ * 
+ * @author Lukas Kannenberg
+ * @since 15-10-2015
+ * @version 15-10-2015 22:50
+ *
+ */
 public class ListControl {
 
 	private Grade grade;
@@ -18,12 +26,13 @@ public class ListControl {
 	 */
 	public ListControl(Grade grade) {
 		this.grade = grade;
+		initialiseLists();
 	}
 
 	/**
-	 * First initialization of the lists.
+	 * Initializes the lists.
 	 */
-	public void initialiseLists() {
+	private void initialiseLists() {
 		if (grade == null)
 			return;
 		BookItem[] books = grade.getBookItems();
@@ -44,8 +53,7 @@ public class ListControl {
 	}
 
 	/**
-	 * 
-	 * @param grade
+	 * Updates the given lists.
 	 */
 	public void updateGivenBooks() {
 		if (grade == null)
@@ -54,20 +62,28 @@ public class ListControl {
 		BookGroup[] bookGroups = grade.getBookGroups();
 		// Remove / Add BookGroup BookItems from Minimum value
 		for (BookGroup bookGroup : bookGroups) {
-			if(getInSelected(bookGroup) >= bookGroup.getMinimumSelected()) {
-				removeInSelected(bookGroup);
+			if (getInSelected(bookGroup) >= bookGroup.getMinimumSelected()) {
+				removeInGiven(bookGroup);
 			} else {
-				addRemainingInSelected(bookGroup);
+				addRemainingInGiven(bookGroup);
 			}
 		}
 		// Add Preset BookItems to Given if not in Selected
 		for (BookItem bookItem : books) {
-			if(!selectedBooks.contains(bookItem) && !givenBooks.contains(bookItem)) {
+			if (!selectedBooks.contains(bookItem) && !givenBooks.contains(bookItem)) {
 				givenBooks.add(bookItem);
 			}
 		}
 	}
 
+	/**
+	 * Searches and returns the amount of BookItems from a specific BookGroup
+	 * contained in the selectedBook list.
+	 * 
+	 * @param group the the book group
+	 * @return the amount of BookItems from a specific BookGroup contained in
+	 *         the selectedBook list
+	 */
 	private int getInSelected(BookGroup group) {
 		int contained = 0;
 		for (BookItem bookItem : selectedBooks) {
@@ -77,25 +93,30 @@ public class ListControl {
 		}
 		return contained;
 	}
-	
-	private void removeInSelected(BookGroup group) {
+
+	/**
+	 * Removes all BookItems from a specific BookGroup in the selected
+	 * 
+	 * @param group
+	*/
+	private void removeInGiven(BookGroup group) {
 		for (BookItem bookItem : group.getBookItems()) {
-			if(selectedBooks.contains(bookItem)) {
+			if (selectedBooks.contains(bookItem)) {
 				selectedBooks.remove(bookItem);
 			}
 		}
 	}
-	
-	private void addRemainingInSelected(BookGroup group) {
+
+	private void addRemainingInGiven(BookGroup group) {
 		for (BookItem bookItem : group.getBookItems()) {
-			if(!givenBooks.contains(bookItem) && !selectedBooks.contains(bookItem)) {
+			if (!givenBooks.contains(bookItem) && !selectedBooks.contains(bookItem)) {
 				givenBooks.add(bookItem);
 			}
 		}
 	}
-	
+
 	public void switchItem(BookItem item) {
-		if(givenBooks.contains(item)) {
+		if (givenBooks.contains(item)) {
 			givenBooks.remove(item);
 			selectedBooks.add(item);
 		} else if (selectedBooks.contains(item)) {
@@ -105,9 +126,9 @@ public class ListControl {
 			System.err.println("The BookItem to switch is not contained in either list.");
 		}
 	}
-	
+
 	public void removeItem(BookItem item) {
-		if(givenBooks.contains(item)) {
+		if (givenBooks.contains(item)) {
 			givenBooks.remove(item);
 		} else if (selectedBooks.contains(item)) {
 			selectedBooks.remove(item);

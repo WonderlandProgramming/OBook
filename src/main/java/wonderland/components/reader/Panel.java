@@ -1,9 +1,6 @@
 package main.java.wonderland.components.reader;
 
 import java.sql.Timestamp;
-import java.util.Timer;
-
-import org.w3c.dom.css.Counter;
 
 import main.java.wonderland.general.core.Order;
 
@@ -19,8 +16,11 @@ public class Panel {
 		this.ID = ID;
 	}
 	
-	private void update() {
-		
+	public void update(Order order) {
+		if(status == PanelState.OPEN) {
+			setOrder(order);
+			setTime(new Timestamp(System.currentTimeMillis()));
+		}
 	}
 
 	/**
@@ -54,12 +54,8 @@ public class Panel {
 	/**
 	 * @param order the order to set
 	 */
-	public void setOrder(Order order) {
-		if(status == PanelState.OPEN) {
-			this.setOrder(order);
-			time = new Timestamp(System.currentTimeMillis());
-			update();
-		}
+	private void setOrder(Order order) {
+		this.order = order;
 	}
 
 	/**
@@ -86,7 +82,7 @@ public class Panel {
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(Timestamp time) {
+	private void setTime(Timestamp time) {
 		this.time = time;
 	}
 }

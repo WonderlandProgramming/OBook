@@ -30,7 +30,7 @@ public class ObjectQueue {
 					if(ClientControl.hasOrders() && controller.getFreePanel() != null) {
 						Order order = ClientControl.getNextOrder();
 						if(order != null) {
-							controller.getFreePanel().setOrder(order);
+							controller.getFreePanel().update(order);
 						}
 					}
 					try {

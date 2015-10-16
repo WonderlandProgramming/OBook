@@ -1,8 +1,6 @@
 package main.java.wonderland.main;
 
 import java.awt.Color;
-import java.util.List;
-import java.util.Map;
 
 import main.java.wonderland.general.core.Book;
 import main.java.wonderland.general.core.BookBuilder;
@@ -15,9 +13,12 @@ import main.java.wonderland.general.core.Subject;
 import main.java.wonderland.search.BookSearch;
 import main.java.wonderland.search.SubjectSearch;
 import main.java.wonderland.search.criteria.BookCriteria;
-import main.java.wonderland.webServer.Page;
 import main.java.wonderland.webServer.WebServer;
 import main.java.wonderland.webServer.login.LoginLevel;
+import main.java.wonderland.webServer.login.User;
+import main.java.wonderland.webServer.page.ConfigPage;
+import main.java.wonderland.webServer.page.LoginPage;
+import main.java.wonderland.webServer.page.MainPage;
 
 /**
  * Application Main class.
@@ -93,13 +94,12 @@ public class Main {
 		
 		
 		WebServer web = new WebServer();
-		web.addPage(new Page("/", "res/htmlTest.html", LoginLevel.All) {
-			
-			@Override
-			protected void onPost(Map<String, List<String>> watchElements) {
-				System.err.println(watchElements);
-			}
-		});
+		WebServer.addUser(new User("admin", "admin"), LoginLevel.SuperAdministrator);
+		WebServer.addUser(new User("schreiben", "schreiben"), LoginLevel.Schreiben);
+		
+		web.addPage(new LoginPage());
+		web.addPage(new MainPage());
+		web.addPage(new ConfigPage());
 	}
 
 }

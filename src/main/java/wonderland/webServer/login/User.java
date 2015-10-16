@@ -11,22 +11,31 @@ public class User {
 	
 	private LoginLevel loginLevel;
 	
-	public User(String username, String password, LoginLevel level){
+	public User(String username, String password){
 		String userID = HTMLUtils.generateUserID();
+		
 		while(WebServer.getUser(userID) != null)
 			userID = HTMLUtils.generateUserID();
+		
+		this.userID = userID;
+		
 		this.username = username;
-		this.loginLevel = level;
+		this.password = password;
+		this.loginLevel = LoginLevel.All;
 	}
 	
 	public boolean isPassword(String compareTo){
-		return password == compareTo;
+		return password.equals(compareTo);
 	}
 	
 	public boolean isUsername(String compareTo){
-		return username == compareTo;
+		return username.equals(compareTo);
 	}
-
+	
+	public void setLoginLevel(LoginLevel newValue){
+		this.loginLevel = newValue;
+	}
+	
 	public String getUserID() {
 		return userID;
 	}
@@ -35,4 +44,13 @@ public class User {
 		return loginLevel;
 	}
 	
+	public boolean isValid(){
+		if(username == null || username.isEmpty()){
+			return false;
+		}
+		if(password == null || password.isEmpty()){
+			return false;
+		}
+		return true;
+	}
 }

@@ -11,5 +11,10 @@
         <artifactId>spark-core</artifactId>
         <version>2.2</version>
     </dependency>
-  </dependencies>
+
+
+    </dependencies>
+    <properties>
+    	<jdk.version>1.8</jdk.version>
+    </properties>
 </project>

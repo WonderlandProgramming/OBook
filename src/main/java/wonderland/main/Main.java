@@ -19,6 +19,7 @@ import main.java.wonderland.webServer.login.User;
 import main.java.wonderland.webServer.page.ConfigPage;
 import main.java.wonderland.webServer.page.LoginPage;
 import main.java.wonderland.webServer.page.MainPage;
+import main.java.wonderland.webServer.page.TestPage;
 
 /**
  * Application Main class.
@@ -100,6 +101,7 @@ public class Main {
 		web.addPage(new LoginPage());
 		web.addPage(new MainPage());
 		web.addPage(new ConfigPage());
+		web.addPage(new TestPage());
 	}
 
 }

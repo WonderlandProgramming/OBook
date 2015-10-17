@@ -2,7 +2,6 @@ package main.java.wonderland.webServer.page;
 
 import java.util.Map;
 
-import main.java.wonderland.webServer.Page;
 import main.java.wonderland.webServer.WebServer;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
@@ -52,10 +51,10 @@ public class LoginPage extends Page {
 				loginError = "Can not find User!";
 			else if (!u.isPassword(pw))
 				loginError = "Password is wrong!";
-			
+
+			System.out.println("Login not successful for " + lg + " with " + pw);
 			pw = null;
 			lg = null;
-			System.out.println("Login not successful for " + lg + " with " + pw);
 		}
 	}
 
@@ -63,6 +62,7 @@ public class LoginPage extends Page {
 	protected void setupPage(Map<String, Object> map) {
 		map.put("pageTitle", "Login");
 		map.put("error", loginError);
+		
 		map.put("username", "admin");
 		
 		loginError = null;

@@ -1,4 +1,4 @@
-package main.java.wonderland.webServer;
+package main.java.wonderland.webServer.page;
 
 import static spark.Spark.before;
 import static spark.Spark.get;
@@ -8,6 +8,7 @@ import static spark.Spark.put;
 import java.util.HashMap;
 import java.util.Map;
 
+import main.java.wonderland.webServer.WebServer;
 import main.java.wonderland.webServer.login.LoginLevel;
 import spark.Filter;
 import spark.ModelAndView;
@@ -89,7 +90,6 @@ public abstract class Page {
 		@Override
 		public Object handle(Request request, Response response) throws Exception {
 			if (request.requestMethod() == "GET") {
-				//TODO implement the setupPage component
 				Map<String, Object> map = new HashMap<>();
 				page.setupPage(map);
 				return new FreeMarkerEngine().render(new ModelAndView(map , page.ftlPath));
@@ -106,10 +106,9 @@ public abstract class Page {
 					}
 				}
 				page.onPostEnd(response);
-
 				Map<String, Object> webValues = new HashMap<>();
 				page.setupPage(webValues);
-				return new FreeMarkerEngine().render(new ModelAndView(map , page.ftlPath));
+				return new FreeMarkerEngine().render(new ModelAndView(webValues , page.ftlPath));
 			}
 		}
 	}

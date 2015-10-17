@@ -32,6 +32,10 @@ public class User {
 		return username.equals(compareTo);
 	}
 	
+	public String getUsername(){
+		return username;
+	}
+	
 	public void setLoginLevel(LoginLevel newValue){
 		this.loginLevel = newValue;
 	}

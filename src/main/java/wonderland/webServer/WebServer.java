@@ -10,6 +10,7 @@ import java.util.List;
 
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
+import main.java.wonderland.webServer.page.Page;
 
 public class WebServer {
 	private List<Page> webPages;

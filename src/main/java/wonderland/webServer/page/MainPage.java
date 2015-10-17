@@ -2,7 +2,6 @@ package main.java.wonderland.webServer.page;
 
 import java.util.Map;
 
-import main.java.wonderland.webServer.Page;
 import main.java.wonderland.webServer.login.LoginLevel;
 import spark.Response;
 

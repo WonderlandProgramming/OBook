@@ -1,7 +1,7 @@
 package main.java.wonderland.webServer;
 
-import static spark.SparkBase.externalStaticFileLocation;
 import static spark.SparkBase.port;
+import static spark.SparkBase.staticFileLocation;
 import static spark.SparkBase.stop;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class WebServer {
 
 	public WebServer() {
 		port(80);
-		externalStaticFileLocation("res");
+		staticFileLocation("/public");
 		webPages = new ArrayList<>();
 	}
 

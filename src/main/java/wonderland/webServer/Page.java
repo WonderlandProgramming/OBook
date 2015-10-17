@@ -3,28 +3,34 @@ package main.java.wonderland.webServer;
 import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import main.java.wonderland.webServer.login.LoginLevel;
 import spark.Filter;
+import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.template.freemarker.FreeMarkerEngine;
 
 public abstract class Page {
 
-	protected final String subPath;
-	protected final String htmlPath;
+	private final String subPath;
+	private final String ftlPath;
 	private LoginLevel loginLevel;
 
-	protected Page(String subPath, String htmlFile, LoginLevel loginLevel) {
+	protected Page(String subPath, String ftlFile, LoginLevel loginLevel) {
 		this.subPath = "/" + subPath;
 		this.loginLevel = loginLevel;
-		this.htmlPath = htmlFile;
+		this.ftlPath = ftlFile;
 		this.addBeforeFilter(new privateLoginChecker(this));
 		this.addGETPOSTRoute(new privateListenerRoute(this));
+
+		put(this.subPath, new privateListenerRoute(this));
 	}
 
 	protected abstract void onPost(String key, String value);
@@ -61,7 +67,7 @@ public abstract class Page {
 				}
 				// No rights to acces with the current userrights
 				else if (WebServer.getUser(UIDinCookies).getLoginLevel().getLevel() < page.loginLevel.getLevel()) {
-					//TODO ACCESS DENIED Message
+					// TODO ACCESS DENIED Message
 					response.redirect("/");
 					return;
 				} else {
@@ -70,6 +76,8 @@ public abstract class Page {
 			}
 		}
 	}
+	
+	protected abstract void setupPage(Map<String, Object> map);
 
 	class privateListenerRoute implements Route {
 		private Page page;
@@ -81,9 +89,12 @@ public abstract class Page {
 		@Override
 		public Object handle(Request request, Response response) throws Exception {
 			if (request.requestMethod() == "GET") {
-				return HTMLUtils.readHTMLFile(htmlPath);
+				//TODO implement the setupPage component
+				Map<String, Object> map = new HashMap<>();
+				page.setupPage(map);
+				return new FreeMarkerEngine().render(new ModelAndView(map , page.ftlPath));
+			
 			} else {
-
 				QueryParamsMap map = request.queryMap();
 				for (String element : map.toMap().keySet()) {
 					if (map.get(element).values().length > 1) {
@@ -95,7 +106,10 @@ public abstract class Page {
 					}
 				}
 				page.onPostEnd(response);
-				return HTMLUtils.readHTMLFile(htmlPath);
+
+				Map<String, Object> webValues = new HashMap<>();
+				page.setupPage(webValues);
+				return new FreeMarkerEngine().render(new ModelAndView(map , page.ftlPath));
 			}
 		}
 	}

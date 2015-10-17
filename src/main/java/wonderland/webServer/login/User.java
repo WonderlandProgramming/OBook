@@ -20,12 +20,12 @@ public class User {
 		this.userID = userID;
 		
 		this.username = username;
-		this.password = password;
+		this.password = PasswordUtil.hashPassword(password);
 		this.loginLevel = LoginLevel.All;
 	}
 	
 	public boolean isPassword(String compareTo){
-		return password.equals(compareTo);
+		return PasswordUtil.verifyPassword(compareTo, password);
 	}
 	
 	public boolean isUsername(String compareTo){

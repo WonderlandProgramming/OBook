@@ -30,7 +30,7 @@ public class LoginPage extends Page {
 	}
 
 	@Override
-	protected void onPost(String key, String value) {
+	protected void onPost(String key, String value, User u) {
 		if (key.equals("password"))
 			pw = value;
 		if (key.equals("username"))
@@ -38,14 +38,14 @@ public class LoginPage extends Page {
 	}
 
 	@Override
-	protected void onPostEnd(Response response) {
+	protected void onPostEnd(Response response, User tempUser) {
 		User u = WebServer.getUserByName(lg);
 		if (u != null && u.isValid() && u.isPassword(pw)) {
 			response.cookie("OBOOKUID", u.getUserID(), 18000);
 			System.out.println("Login successful for " + lg);
 			pw = null;
 			lg = null;
-			response.redirect("/");
+			response.redirect("/index");
 		} else {
 			if (u == null)
 				loginError = "Can not find User!";
@@ -59,12 +59,16 @@ public class LoginPage extends Page {
 	}
 
 	@Override
-	protected void setupPage(Map<String, Object> map) {
+	protected void setupPage(User u) {
+		Map<String, Object> map = u.getPageConfiguration();
+		
 		map.put("pageTitle", "Login");
 		map.put("error", loginError);
 		
 		map.put("username", "admin");
 		
 		loginError = null;
+		
+		u.setPageConfiguration(map);
 	}
 }

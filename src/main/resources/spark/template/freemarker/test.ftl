@@ -10,6 +10,7 @@
   <form method="post">
 	   <dl>
 	     <dt>BookCategory:
+	     <input type="hidden" name="search" value="true">
 	     <dd><input name="fach" size="30" maxlength="50"">
 	   </dl>
 	   <input type="submit" value="submit">
@@ -38,8 +39,9 @@
     			<td>${book.subject}</td>
     			<td>${book.category}</td>
     			<td>
-    				<form name="form" + ${book.id} method="post">
-                		<button onclick="location.href='@Url.Action("BookClicked", "ControllerName")'" />
+    				<form method="post">
+    					 <input type="hidden" name="removed" value=${book.id}>
+    					 <button type="submit">Remove Book</button>
                		</form>
                	</td>
  		 	</tr>

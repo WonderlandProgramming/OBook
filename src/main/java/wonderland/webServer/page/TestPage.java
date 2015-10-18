@@ -9,32 +9,57 @@ import main.java.wonderland.general.core.Book;
 import main.java.wonderland.search.BookSearch;
 import main.java.wonderland.search.criteria.BookCriteria;
 import main.java.wonderland.webServer.login.LoginLevel;
+import main.java.wonderland.webServer.login.User;
 import spark.Response;
 
 public class TestPage extends Page {
 
 	private String fach;
-
+	private boolean newSearch;
+	
 	public TestPage() {
-		super("/test", "test.ftl", LoginLevel.NotLoggedIn);
+		super("/test", "test.ftl", LoginLevel.Schreiben);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void onPost(String key, String value) {
-		if (key.equals("fach"))
+	protected void onPost(String key, String value, User u) {
+		if(key.equals("search")){
+			newSearch = true;
+		}
+			
+		if (key.equals("fach")) {
 			fach = value;
+		}
+
+		if (key.equals("removed") && !u.getUsername().equalsIgnoreCase("SHORTTERM USER")) {
+			Map<String, Object> map = u.getPageConfiguration();
+			List<Object> books = (List<Object>) map.get("books");
+
+			for (Object object : books) {
+				if (((HashMap<String, Object>) object).get("id").equals(value)) {
+					books.remove(object);
+					break;
+				}
+			}
+			if (books.isEmpty())
+				books = null;
+			map.put("books", books);
+			u.setPageConfiguration(map);
+		}
 	}
 
 	@Override
-	protected void onPostEnd(Response response) {
+	protected void onPostEnd(Response response, User u) {
 
 	}
 
 	@Override
-	protected void setupPage(Map<String, Object> map) {
-
-		map.put("user", "testUser1");
-		map.put("title", "TestPage");
+	protected void setupPage(User u) {
+		Map<String, Object> map = u.getPageConfiguration();
+		
+		map.put("user", u.getUsername());
+		map.put("title", u.getLoginLevel());
 
 		HashMap<String, String> product = new HashMap<>();
 		product.put("url", "TestURL");
@@ -43,7 +68,9 @@ public class TestPage extends Page {
 
 		List<Object> bookList = new ArrayList<>();
 
-		if (fach != null) {
+		if (fach != null && !fach.isEmpty() && newSearch) {
+			u.clearSubConfiguration("books");
+
 			BookCriteria[] crit = { BookCriteria.SUBJECT };
 
 			Book[] books = BookSearch.getBooks(fach, crit);
@@ -55,11 +82,12 @@ public class TestPage extends Page {
 				bookHash.put("category", book.getSubject().getCategory().getName());
 				bookList.add(bookHash);
 			}
+			newSearch = false;
+			map.put("books", bookList);
+
 			fach = null;
 		}
-
-		map.put("books", bookList);
-
+		u.setPageConfiguration(map);
 	}
 
 }

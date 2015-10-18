@@ -16,10 +16,10 @@ import main.java.wonderland.search.criteria.BookCriteria;
 import main.java.wonderland.webServer.WebServer;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
-import main.java.wonderland.webServer.page.ConfigPage;
+import main.java.wonderland.webServer.page.BasePage;
 import main.java.wonderland.webServer.page.LoginPage;
-import main.java.wonderland.webServer.page.MainPage;
 import main.java.wonderland.webServer.page.TestPage;
+import main.java.wonderland.webServer.page.webElements.SidebarElement;
 
 /**
  * Application Main class.
@@ -95,13 +95,25 @@ public class Main {
 		
 		
 		WebServer web = new WebServer();
+		
 		WebServer.addUser(new User("admin", "admin"), LoginLevel.SuperAdministrator);
 		WebServer.addUser(new User("schreiben", "schreiben"), LoginLevel.Schreiben);
 		
+		
 		web.addPage(new LoginPage());
-		web.addPage(new MainPage());
-		web.addPage(new ConfigPage());
 		web.addPage(new TestPage());
+		
+		BasePage p = new BasePage("/index", "mainTemplate.ftl", LoginLevel.Schreiben);
+		SidebarElement e1 = new SidebarElement("Submenüs", "icon-tasks");
+		e1.addElement(new SidebarElement("Link1", "icon-angle-right", "http://google.com"));
+		e1.addElement(new SidebarElement("Link2", "icon-angle-right", "http://yahoo.com"));
+		
+		SidebarElement e2 = new SidebarElement("Zur Testseite", "icon-pencil", "/test");
+		
+		p.addSideBarElement(e1);
+		p.addSideBarElement(e2);
+		
+		web.addPage(p);
 	}
 
 }

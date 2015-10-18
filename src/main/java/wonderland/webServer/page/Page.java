@@ -5,11 +5,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import main.java.wonderland.webServer.WebServer;
 import main.java.wonderland.webServer.login.LoginLevel;
+import main.java.wonderland.webServer.login.User;
 import spark.Filter;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -25,7 +25,7 @@ public abstract class Page {
 	private LoginLevel loginLevel;
 
 	protected Page(String subPath, String ftlFile, LoginLevel loginLevel) {
-		this.subPath = "/" + subPath;
+		this.subPath = subPath;
 		this.loginLevel = loginLevel;
 		this.ftlPath = ftlFile;
 		this.addBeforeFilter(new privateLoginChecker(this));
@@ -34,9 +34,11 @@ public abstract class Page {
 		put(this.subPath, new privateListenerRoute(this));
 	}
 
-	protected abstract void onPost(String key, String value);
+	protected abstract void setupPage(User u);
 
-	protected abstract void onPostEnd(Response response);
+	protected abstract void onPost(String key, String value, User u);
+
+	protected abstract void onPostEnd(Response response, User u);
 
 	protected void addBeforeFilter(Filter filter) {
 		before(subPath, filter);
@@ -58,8 +60,8 @@ public abstract class Page {
 		public void handle(Request request, Response response) throws Exception {
 			Map<String, String> currentUser = request.cookies();
 			String UIDinCookies = currentUser.get("OBOOKUID");
-
 			// if current page needs you to be logged in
+			
 			if (page.loginLevel.getLevel() > LoginLevel.NotLoggedIn.getLevel()) {
 				// if not logged in
 				if (UIDinCookies == null || UIDinCookies.isEmpty() || WebServer.getUser(UIDinCookies) == null) {
@@ -69,7 +71,7 @@ public abstract class Page {
 				// No rights to acces with the current userrights
 				else if (WebServer.getUser(UIDinCookies).getLoginLevel().getLevel() < page.loginLevel.getLevel()) {
 					// TODO ACCESS DENIED Message
-					response.redirect("/");
+					response.redirect("/index");
 					return;
 				} else {
 					return;
@@ -77,8 +79,6 @@ public abstract class Page {
 			}
 		}
 	}
-	
-	protected abstract void setupPage(Map<String, Object> map);
 
 	class privateListenerRoute implements Route {
 		private Page page;
@@ -89,26 +89,28 @@ public abstract class Page {
 
 		@Override
 		public Object handle(Request request, Response response) throws Exception {
-			if (request.requestMethod() == "GET") {
-				Map<String, Object> map = new HashMap<>();
-				page.setupPage(map);
-				return new FreeMarkerEngine().render(new ModelAndView(map , page.ftlPath));
+			User u = WebServer.getUser(request.cookies().get("OBOOKUID"));
+			if(u == null) u = new User();
 			
+			u.setCurrentPage(subPath);
+			
+			if (request.requestMethod() == "GET") {
+				page.setupPage(u);
+				return new FreeMarkerEngine().render(new ModelAndView(u.getPageConfiguration(), page.ftlPath));
 			} else {
 				QueryParamsMap map = request.queryMap();
 				for (String element : map.toMap().keySet()) {
 					if (map.get(element).values().length > 1) {
 						for (String str : map.get(element).values()) {
-							page.onPost(element, str);
+							page.onPost(element, str, u);
 						}
 					} else {
-						page.onPost(element, map.get(element).value());
+						page.onPost(element, map.get(element).value(), u);
 					}
 				}
-				page.onPostEnd(response);
-				Map<String, Object> webValues = new HashMap<>();
-				page.setupPage(webValues);
-				return new FreeMarkerEngine().render(new ModelAndView(webValues , page.ftlPath));
+				page.onPostEnd(response, u);
+				page.setupPage(u);
+				return new FreeMarkerEngine().render(new ModelAndView(u.getPageConfiguration(), page.ftlPath));
 			}
 		}
 	}

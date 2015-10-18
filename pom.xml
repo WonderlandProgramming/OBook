@@ -18,7 +18,7 @@
 	</properties>
   
     <dependencies>
-  		<!-- Spark JAva -->
+  		<!-- Spark Java -->
 	    <dependency>
 	        <groupId>com.sparkjava</groupId>
 	        <artifactId>spark-core</artifactId>
@@ -38,16 +38,6 @@
 	        <artifactId>freemarker</artifactId>
 	        <version>${freemarker.version}</version>
 	    </dependency>
-    
-    	<!-- Spring Core -->
-	
-		<!-- Spring Context -->
-	
-		<!-- Spring JDBC -->
-	
-		<!-- HyperSQL DB -->
-	
-		<!--  Connection pool -->
 		
 		<!-- Password hashes -->
 		<dependency>
@@ -56,7 +46,6 @@
 			<version>${jbcrypt.version}</version>
 		</dependency>
 		
-		<!-- Populate bean from request -->	
   </dependencies>
   
   <build>
@@ -82,7 +71,7 @@
 			    	</execution>
 			  	</executions>
 			  	<configuration>
-				    <mainClass>com.minitwit.App</mainClass>
+				    <mainClass>main.java.wonderland.main.Main</mainClass>
 				    <arguments>
 				    </arguments>
 				</configuration>

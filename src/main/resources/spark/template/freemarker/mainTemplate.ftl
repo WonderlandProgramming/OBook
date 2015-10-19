@@ -7,7 +7,7 @@
 <head>
    
      <meta charset="UTF-8" />
-    <title>OBook | ${title}</title>
+    <title>${title} | OBook</title>
      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -47,109 +47,53 @@
                 <ul class="nav navbar-top-links navbar-right">
 
                     <!-- MESSAGES SECTION -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                          	<#if pendingMessages??>
-                          		<span class="label label-success">${pendingMessages}</span>    <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
-                       		<#else>
-                       			<span class="label label-success">0</span>    <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
-                       		</#if>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-messages">
-                            <center>Ungelesene Nachrichten.</center>
-                            <li class="divider"></li>
-                            <!-- Infos oben rechts erster kasten!
-                                 Hier wird etwas per loop angezeigt -> todo loop implementieren und was soll angezeigt werden?
-                            -->
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <strong>Didi Frog</strong>
-                                        <span class="pull-right text-muted">
-                                            <em>vor 2 minuten</em>
-                                        </span>
-                                    </div>
-                                    <div>Das System klappt klasse!
-                                    </div>
+                    
+                    <#if topBarElements??>
+                        <#list topBarElements as topBarElement>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <#if topBarElement.shownNumber??>
+                                            <span class="label label-success">${topBarElement.shownNumber}</span>    <i class=${topBarElement.symbol}></i>&nbsp; <i class="icon-chevron-down"></i>
+                                    </#if>
                                 </a>
-                            </li>
-                            <li class="divider"></li>
-                            
-                            <li>
-                                <a class="text-center" href="#">
-                                    <strong>Alle Nachrichten lesen</strong>
-                                    <i class="icon-angle-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </li>
-                    <!--END MESSAGES SECTION -->
-
-                    <!--TASK SECTION -->
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <span class="label label-danger">1</span>   <i class="icon-tasks"></i>&nbsp; <i class="icon-chevron-down"></i>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-tasks">
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <p>
-                                            <strong> Aufträge </strong>
-                                            <span class="pull-right text-muted">40% Aufträge fertig</span>
-                                        </p>
-                                        <div class="progress progress-striped active">
-                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                                <span class="sr-only">40% Aufträge fertig (success)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
                                 
-                            <li>
-                                <a class="text-center" href="#">
-                                    <strong>Alle Aufgaben ansehen</strong>
-                                    <i class="icon-angle-right"></i>
-                                </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                     <#if topBarElement.topBarElements??>
+                                        <center>Ungelesene Nachrichten.</center>
+                                     
+                                    
+                                        <li class="divider"></li>
+                                        <!-- Infos oben rechts erster kasten!
+                                             Hier wird etwas per loop angezeigt -> todo loop implementieren und was soll angezeigt werden?
+                                        -->
+                                        <#list topBarElement.topBarElements as element>
+                                            <li>
+                                                <a href="#">
+                                                    <div>
+                                                        <strong>${element.topMessage}</strong>
+                                                        <span class="pull-right text-muted">
+                                                            <em>vor ${element.time} Minute[n]</em>
+                                                        </span>
+                                                    </div>
+                                                    <div>${element.message}
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="divider"></li>
+                                        </#list>
+                                    </#if>
+                                    <li>
+                                        <a class="text-center" href="#">
+                                            <strong>Alle Nachrichten lesen</strong>
+                                            <i class="icon-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                        </ul>
-
-                    </li>
-                    <!--END TASK SECTION -->
-
-                    <!--ALERTS SECTION -->
-                    <li class="chat-panel dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <span class="label label-info">1</span>   <i class="icon-comments"></i>&nbsp; <i class="icon-chevron-down"></i>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-alerts">
-
-                            <li>
-                                <a href="#">
-                                    <div>
-                                        <i class="icon-comment" ></i> Neue Aufträge [5]
-                                    <span class="pull-right text-muted small"> vor 1 Minute/n</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            
-                            <li>
-                                <a class="text-center" href="#">
-                                    <strong>Alle Meldungen ansehen</strong>
-                                    <i class="icon-angle-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </li>
-                    <!-- END ALERTS SECTION -->
+                        </#list>
+                    </#if>       
+                
+                    <!--END MESSAGES SECTION -->
 
                     <!--ADMIN SETTINGS SECTIONS -->
 
@@ -164,7 +108,7 @@
                             <li><a href="#"><i class="icon-gear"></i> Einstellungen </a>
                             </li>
                             <li class="divider"></li>
-                            <li><a href="login.html"><i class="icon-signout"></i> Ausloggen </a>
+                            <li><a href="/logout"><i class="icon-signout"></i> Ausloggen </a>
                             </li>
                         </ul>
 
@@ -196,10 +140,8 @@
             </div>
 
             <ul id="menu" class="collapse">
-
 				<#if sideBarElements??>
   					<li class="panel">
-
 						<#list sideBarElements as sideBarElement>
 							<#if sideBarElement.linkPath??>
 								<a href=${sideBarElement.linkPath} >
@@ -230,7 +172,6 @@
 										</ul>			
 							</#if>
   						</#list>
-
 					 </li>
   				</#if>
         </div>
@@ -243,24 +184,16 @@
             <div class="inner" style="min-height:1200px;">
                 <div class="row">
                     <div class="col-lg-12">
-
-
-                        <h2>Here comes the implemented page!</h2>
-
-
+                        <h2>${title}</h2>
                     </div>
                 </div>
-
                 <hr/>
+                
+               	<!--PAGE CONTENT add page here!-->
+               		
+                <!--END PAGE CONTENT -->
             </div>
-
-
-
-
         </div>
-       <!--END PAGE CONTENT -->
-
-
     </div>
 
      <!--END MAIN WRAPPER -->

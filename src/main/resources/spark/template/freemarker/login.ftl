@@ -49,6 +49,14 @@
                 <p>
                 <input name="username" type="username" placeholder="Username" class="form-control" />
                 <input name="password" type="password" placeholder="Password" class="form-control" />
+                
+                <#if error??>
+                	<p class="text-muted text-center btn-block btn btn-danger btn-rect">
+                    	${error}
+               	 	</p>
+                </#if>
+
+				<p>
                 <button class="btn text-muted text-center btn-danger" type="submit">Sign in</button>
             </form>
         </div>

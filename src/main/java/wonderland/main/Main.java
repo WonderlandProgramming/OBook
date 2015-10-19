@@ -18,8 +18,8 @@ import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
 import main.java.wonderland.webServer.page.BasePage;
 import main.java.wonderland.webServer.page.LoginPage;
+import main.java.wonderland.webServer.page.LogoutPage;
 import main.java.wonderland.webServer.page.TestPage;
-import main.java.wonderland.webServer.page.webElements.SidebarElement;
 
 /**
  * Application Main class.
@@ -96,24 +96,16 @@ public class Main {
 		
 		WebServer web = new WebServer();
 		
-		WebServer.addUser(new User("admin", "admin"), LoginLevel.SuperAdministrator);
+		WebServer.addUser(new User("admin", "admin"), LoginLevel.Administrator);
 		WebServer.addUser(new User("schreiben", "schreiben"), LoginLevel.Schreiben);
-		
+		WebServer.addUser(new User("LPeer", "admin"), LoginLevel.SuperAdministrator);
 		
 		web.addPage(new LoginPage());
+		web.addPage(new LogoutPage());
+		
+		web.addPage(new BasePage("/index", "mainTemplate.ftl", LoginLevel.Schreiben, "MainPage"));
+		web.addPage(new BasePage("/test2", "testTemplate2.ftl", LoginLevel.Schreiben, "TestPage2"));
 		web.addPage(new TestPage());
-		
-		BasePage p = new BasePage("/index", "mainTemplate.ftl", LoginLevel.Schreiben);
-		SidebarElement e1 = new SidebarElement("Submenüs", "icon-tasks");
-		e1.addElement(new SidebarElement("Link1", "icon-angle-right", "http://google.com"));
-		e1.addElement(new SidebarElement("Link2", "icon-angle-right", "http://yahoo.com"));
-		
-		SidebarElement e2 = new SidebarElement("Zur Testseite", "icon-pencil", "/test");
-		
-		p.addSideBarElement(e1);
-		p.addSideBarElement(e2);
-		
-		web.addPage(p);
 	}
 
 }

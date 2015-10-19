@@ -10,15 +10,14 @@ import main.java.wonderland.search.BookSearch;
 import main.java.wonderland.search.criteria.BookCriteria;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
-import spark.Response;
 
-public class TestPage extends Page {
+public class TestPage extends BasePage {
 
 	private String fach;
 	private boolean newSearch;
 	
 	public TestPage() {
-		super("/test", "test.ftl", LoginLevel.Schreiben);
+		super("/test", "test.ftl", LoginLevel.Schreiben, "TestPage");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -50,21 +49,8 @@ public class TestPage extends Page {
 	}
 
 	@Override
-	protected void onPostEnd(Response response, User u) {
-
-	}
-
-	@Override
-	protected void setupPage(User u) {
+	protected void setupSpecialPage(User u){
 		Map<String, Object> map = u.getPageConfiguration();
-		
-		map.put("user", u.getUsername());
-		map.put("title", u.getLoginLevel());
-
-		HashMap<String, String> product = new HashMap<>();
-		product.put("url", "TestURL");
-		product.put("name", "TestName");
-		map.put("latestProduct", product);
 
 		List<Object> bookList = new ArrayList<>();
 
@@ -89,5 +75,4 @@ public class TestPage extends Page {
 		}
 		u.setPageConfiguration(map);
 	}
-
 }

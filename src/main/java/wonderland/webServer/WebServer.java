@@ -1,5 +1,6 @@
 package main.java.wonderland.webServer;
 
+import static spark.Spark.get;
 import static spark.SparkBase.port;
 import static spark.SparkBase.staticFileLocation;
 import static spark.SparkBase.stop;
@@ -20,6 +21,12 @@ public class WebServer {
 		port(80);
 		staticFileLocation("/public");
 		webPages = new ArrayList<>();
+
+		//Redirects to the Index if just the ip is called
+		get("/", (req, res) -> {
+			res.redirect("/index");
+			return "";
+		});
 	}
 
 	public void addPage(Page page) {
@@ -33,15 +40,16 @@ public class WebServer {
 	public static User getUser(String UID) {
 		return userList.get(UID);
 	}
-	
+
 	public static User getUserByName(String name) {
 		for (User u : userList.values()) {
-			if(u.isUsername(name)) return u;
+			if (u.isUsername(name))
+				return u;
 		}
 		return null;
 	}
-	
-	public static void addUser(User u, LoginLevel accessLevel){
+
+	public static void addUser(User u, LoginLevel accessLevel) {
 		u.setLoginLevel(accessLevel);
 		userList.put(u.getUserID(), u);
 	}

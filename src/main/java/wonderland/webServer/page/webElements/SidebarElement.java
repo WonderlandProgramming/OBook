@@ -25,7 +25,7 @@ public class SidebarElement implements IWebElement {
 	public SidebarElement(String name, String iconPath, String linkPath) {
 		this(name, linkPath, iconPath, LoginLevel.All);
 	}
-
+	
 	public SidebarElement(String name, String iconPath, LoginLevel level) {
 		this(name, null, iconPath, level);
 	}

@@ -9,9 +9,8 @@ import main.java.wonderland.webServer.login.User;
 import main.java.wonderland.webServer.page.webElements.SidebarElement;
 import main.java.wonderland.webServer.page.webElements.TopBarElement;
 import main.java.wonderland.webServer.page.webElements.TopBarElements;
-import spark.Response;
 
-public class BasePage extends Page {
+public abstract class BasePage extends Page {
 
 	private List<SidebarElement> sideBarElements;
 	private List<TopBarElements> topBarElements;
@@ -27,28 +26,45 @@ public class BasePage extends Page {
 	}
 	
 	private void init(){
-		SidebarElement e1 = new SidebarElement("Submenüs", "icon-tasks");
-		e1.addElement(new SidebarElement("Link1", "http://google.com", "icon-angle-right", LoginLevel.Administrator));
-		e1.addElement(new SidebarElement("Link2", "icon-angle-right", "http://yahoo.com"));
+		//Sidebar Elements
+		SidebarElement dashBoard = new SidebarElement("Dashboard", "icon-home", "/dashboard");
+		this.addSideBarElement(dashBoard);
 		
-		this.addSideBarElement(e1);
+		SidebarElement auftrag = new SidebarElement("Aufträge", "icon-pencil");
+		auftrag.addElement(new SidebarElement("Erstellen", "/orders/create", false));
+		auftrag.addElement(new SidebarElement("Bearbeiten", "/orders/process", false));
+		auftrag.addElement(new SidebarElement("Fertigstellen", "/orders/finish", false));
+		auftrag.addElement(new SidebarElement("Übersicht", "/orders/edit", null, LoginLevel.Moderator));
+		this.addSideBarElement(auftrag);
+		
+		SidebarElement bibliothek = new SidebarElement("Bibliothek", "icon-book", LoginLevel.Moderator);
+		bibliothek.addElement(new SidebarElement("Neu Erstellen", "/libary/create", false));
+		bibliothek.addElement(new SidebarElement("Bearbeiten", "/libary/edit", false));
+		this.addSideBarElement(bibliothek);
+		
+		SidebarElement kommunikation = new SidebarElement("Kommunikation", "icon-comments");
+		kommunikation.addElement(new SidebarElement("Information", "/communication/log", false));
+		kommunikation.addElement(new SidebarElement("Chats", "/communication/chats", false));
+		this.addSideBarElement(kommunikation);
+		
+		SidebarElement nutzer = new SidebarElement("Verwaltung", "icon-lock", LoginLevel.Administrator);
+		nutzer.addElement(new SidebarElement("Benutzer", "/management/user", false));
+		nutzer.addElement(new SidebarElement("Konfiguration", "/management/config", false));
+		this.addSideBarElement(nutzer);
+		
+		SidebarElement statistik = new SidebarElement("Statistik", "icon-bar-chart", "/statistic");
+		this.addSideBarElement(statistik);
 		
 		
-		SidebarElement e2 = new SidebarElement("Zur Testseite", "icon-pencil", "/test");
 		
-		this.addSideBarElement(e2);
-		
-		
-		TopBarElements topBar1 = new TopBarElements("icon-envelope-alt");
-		topBar1.addTopBarElement(new TopBarElement("Lukas Peer", "Das ist ein Test", 5, LoginLevel.Schreiben));
-		topBar1.setShownNumber(1);
+		//TopBar Elements
+		TopBarElements topBar1 = new TopBarElements("icon-envelope-alt", "Kein Inhalt", "#", "Zu allen Inhalten");
+		topBar1.addTopBarElement(new TopBarElement("Lukas Peer", "Das ist ein Test", 5, LoginLevel.User));
 		
 		this.addTopBarElement(topBar1);
 	}
 	
-	protected void setupSpecialPage(User u){
-		
-	}
+	protected abstract void setupSpecialPage(User u);
 
 	@Override
 	protected void setupPage(User u) {
@@ -89,16 +105,6 @@ public class BasePage extends Page {
 	
 	public List<TopBarElements> getTopBarElements(){
 		return topBarElements;
-	}
-	
-	@Override
-	protected void onPost(String key, String value, User u) {
-
-	}
-
-	@Override
-	protected void onPostEnd(Response response, User u) {
-
 	}
 
 }

@@ -13,10 +13,23 @@ public class TopBarElements implements IWebElement{
 	private int shownNumber = 0;
 	private List<TopBarElement> elements;
 	private String symbol;
+	private String bottomText;
+	private String noElementsMessage = "";
+	private String link = "#";
 	
-	public TopBarElements(String symbol) {
+	/**
+	 * 
+	 * @param symbol
+	 * @param noElementsMessage
+	 * @param link
+	 * @param bottomText
+	 */
+	public TopBarElements(String symbol, String noElementsMessage, String link, String bottomText) {
 		elements = new ArrayList<>();
 		this.symbol = symbol;
+		this.noElementsMessage = noElementsMessage;
+		this.link = link;
+		this.bottomText = bottomText;
 	}
 	
 	public int getShownNumber() {
@@ -26,16 +39,8 @@ public class TopBarElements implements IWebElement{
 		this.elements.add(element);
 	}
 
-	public void setShownNumber(int shownNumber) {
-		this.shownNumber = shownNumber;
-	}
-
 	public List<TopBarElement> getElements() {
 		return elements;
-	}
-
-	public void setElements(List<TopBarElement> elements) {
-		this.elements = elements;
 	}
 
 	@Override
@@ -52,13 +57,39 @@ public class TopBarElements implements IWebElement{
 		}
 		if(canAdd.size() == 0){
 			canAdd = null;
+			shownNumber = 0;
+		}else{
+			shownNumber = elements.size();
 		}
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("topBarElements", canAdd);
 		map.put("shownNumber", shownNumber);
 		map.put("symbol", symbol);
+		map.put("noElementsMessage", noElementsMessage);
+		map.put("link", link);
+		map.put("bottomText", bottomText);
 		
 		return map;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public String getBottomText() {
+		return bottomText;
+	}
+
+	public String getNoElementsMessage() {
+		return noElementsMessage;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setElements(List<TopBarElement> elements) {
+		this.elements = elements;
 	}
 }

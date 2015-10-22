@@ -13,7 +13,7 @@ public class User implements IWebElement{
 	private String username;
 	private String password;
 
-	private LoginLevel loginLevel;
+	private LoginLevel loginlevel;
 
 	private Map<String, Object> pageConfigurationList;
 
@@ -27,7 +27,16 @@ public class User implements IWebElement{
 
 		this.username = username;
 		this.password = PasswordUtil.hashPassword(password);
-		this.loginLevel = LoginLevel.All;
+		this.loginlevel = LoginLevel.All;
+
+		this.pageConfigurationList = new HashMap<>();
+	}
+
+	public User(String username, String password, String UID, LoginLevel loginLevel) {
+		this.userID = UID;
+		this.username = username;
+		this.password = password;
+		this.loginlevel = loginLevel;
 
 		this.pageConfigurationList = new HashMap<>();
 	}
@@ -39,7 +48,7 @@ public class User implements IWebElement{
 			userID = HTMLUtils.generateUserID();
 		this.userID = userID;
 		this.password = PasswordUtil.hashPassword("password");
-		this.loginLevel = LoginLevel.NotLoggedIn;
+		this.loginlevel = LoginLevel.NotLoggedIn;
 		this.pageConfigurationList = new HashMap<>();
 	}
 
@@ -51,12 +60,16 @@ public class User implements IWebElement{
 		return username.equals(compareTo);
 	}
 
+	public void updatePassword(String passwordToHash) {
+		this.password = PasswordUtil.hashPassword(passwordToHash);
+	}
+
 	public String getUsername() {
 		return username;
 	}
 
 	public void setLoginLevel(LoginLevel newValue) {
-		this.loginLevel = newValue;
+		this.loginlevel = newValue;
 	}
 
 	public String getUserID() {
@@ -64,7 +77,7 @@ public class User implements IWebElement{
 	}
 
 	public LoginLevel getLoginLevel() {
-		return loginLevel;
+		return loginlevel;
 	}
 
 	public boolean isValid() {
@@ -91,9 +104,12 @@ public class User implements IWebElement{
 		pageConfigurationList.put(index, null);
 	}
 
+	//TODO change it so there is safe storage area for transmission between different subpages!
 	public void setCurrentPage(String page) {
 		if (!page.equals(pageConfigurationList.get("§PAGEURL"))) {
+			Object pagewide = pageConfigurationList.get("pagewide");
 			pageConfigurationList.clear();
+			pageConfigurationList.put("pagewide", pagewide);
 			pageConfigurationList.put("§PAGEURL", page);
 			this.pageConfigurationList.put("§PAGEORIGINAL", "true");
 		}
@@ -110,7 +126,7 @@ public class User implements IWebElement{
 	@Override
 	public String toString() {
 		return "User [userID=" + userID + ", username=" + username + ", passwordHash=" + password + ", loginLevel="
-				+ loginLevel + ", pageConfigurationList=" + pageConfigurationList + "]";
+				+ loginlevel + ", pageConfigurationList=" + pageConfigurationList + "]";
 	}
 
 	/**
@@ -121,8 +137,8 @@ public class User implements IWebElement{
 	public void setPageConfiguration(Map<String, Object> map) {
 		this.pageConfigurationList = map;
 	}
-	
-	public void diableOriginal(){
+
+	public void diableOriginal() {
 		this.pageConfigurationList.put("§PAGEORIGINAL", "false");
 	}
 
@@ -132,13 +148,9 @@ public class User implements IWebElement{
 
 	@Override
 	public Object getAsWebElement(LoginLevel level) {
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("username", username);
-		map.put("password", password);
-		map.put("userID", userID);
-		map.put("loginlevel", loginLevel.toString());
-		
-		return map;
+		HashMap<String, Object> userdata = new HashMap<>();
+		userdata.put("username", username);
+		userdata.put("loginlevel", loginlevel.name());
+		return userdata;
 	}
 }

@@ -71,7 +71,7 @@ public abstract class Page {
 				// No rights to acces with the current userrights
 				else if (WebServer.getUser(UIDinCookies).getLoginLevel().getLevel() < page.loginLevel.getLevel()) {
 					// TODO ACCESS DENIED Message
-					response.redirect("/index");
+					response.redirect("/dashboard");
 					return;
 				} else {
 					return;

@@ -14,12 +14,6 @@ import main.java.wonderland.search.BookSearch;
 import main.java.wonderland.search.SubjectSearch;
 import main.java.wonderland.search.criteria.BookCriteria;
 import main.java.wonderland.webServer.WebServer;
-import main.java.wonderland.webServer.login.LoginLevel;
-import main.java.wonderland.webServer.login.User;
-import main.java.wonderland.webServer.page.BasePage;
-import main.java.wonderland.webServer.page.LoginPage;
-import main.java.wonderland.webServer.page.LogoutPage;
-import main.java.wonderland.webServer.page.TestPage;
 
 /**
  * Application Main class.
@@ -94,18 +88,8 @@ public class Main {
 		System.out.println(ColorManager.getResultingColor(g, bi));
 		
 		
-		WebServer web = new WebServer();
-		
-		WebServer.addUser(new User("admin", "admin"), LoginLevel.Administrator);
-		WebServer.addUser(new User("schreiben", "schreiben"), LoginLevel.Schreiben);
-		WebServer.addUser(new User("LPeer", "admin"), LoginLevel.SuperAdministrator);
-		
-		web.addPage(new LoginPage());
-		web.addPage(new LogoutPage());
-		
-		web.addPage(new BasePage("/index", "mainTemplate.ftl", LoginLevel.Schreiben, "MainPage"));
-		web.addPage(new BasePage("/test2", "testTemplate2.ftl", LoginLevel.Schreiben, "TestPage2"));
-		web.addPage(new TestPage());
+		new WebServer();
+
 	}
 
 }

@@ -19,15 +19,19 @@ public class SidebarElement implements IWebElement {
 	private List<SidebarElement> subElements;
 
 	public SidebarElement(String name, String iconPath) {
-		this(name, null, iconPath, LoginLevel.All);
+		this(name, null, iconPath, LoginLevel.User);
 	}
 
 	public SidebarElement(String name, String iconPath, String linkPath) {
-		this(name, linkPath, iconPath, LoginLevel.All);
+		this(name, linkPath, iconPath, LoginLevel.User);
 	}
 	
 	public SidebarElement(String name, String iconPath, LoginLevel level) {
 		this(name, null, iconPath, level);
+	}
+	
+	public SidebarElement(String name, String path, boolean userlessVariable) {
+		this(name, path, null, LoginLevel.User);
 	}
 
 	public SidebarElement(String name, String linkPath, String iconPath, LoginLevel level) {

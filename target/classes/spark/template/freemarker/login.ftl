@@ -11,14 +11,24 @@
 	         </div>
 	    </div>
 	    <p style="margin-top:12px;"><p>
-	    <div class="tab-content"  style="width: 450px; margin: auto;">
+	    
+	    <style>
+			form {
+				margin-left: auto;
+   				margin-right: auto;
+				max-width: 600px;
+				min-width: 150px;
+			}
+			</style>
+			
+	    <div class="tab-content" style="max-width: 600px; margin-left: auto; margin-right: auto; min-width: 150px;">
 	        <div id="login" class="tab-pane active">
 	            <form action="/login" class="form-signin" method ="post">
 	                <p class="text-muted text-center btn-block btn btn-primary btn-rect">
 	                    Enter your username and password
 	                </p>
 	                <p style="margin-top:6px;"><p>
-	                <input name="username" type="username" placeholder="Username" class="form-control" />
+	                <input name="username" type="username" placeholder="Nutzername" class="form-control" />
 	                <p style="margin-top:2px;"><p>
 	                <input name="password" type="password" placeholder="Password" class="form-control" />
 	                
@@ -30,11 +40,10 @@
 	
 					<p>
 	                <button class="btn text-muted text-center btn-danger" type="submit">Sign in</button>
-	               
 	            </form>
 	        </div>
 	    </div>
-	<p style="margin-top:80px;"><p>
+	<p style="margin-top:200px;"><p>
 	</div>
 	<div>
 	</div>

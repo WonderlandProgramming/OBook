@@ -15,6 +15,7 @@ import main.java.wonderland.webServer.page.Page;
 import main.java.wonderland.webServer.page.pages.Dashboard;
 import main.java.wonderland.webServer.page.pages.Login;
 import main.java.wonderland.webServer.page.pages.Logout;
+import main.java.wonderland.webServer.page.pages.SelfUserConfig;
 import main.java.wonderland.webServer.page.pages.Statistic;
 import main.java.wonderland.webServer.page.pages.TestPage;
 import main.java.wonderland.webServer.page.pages.communication.Chats;
@@ -55,6 +56,7 @@ public class WebServer {
 		addPage(new Login());
 		addPage(new Logout());
 		addPage(new Dashboard());
+		addPage(new SelfUserConfig());
 		
 		//Order Pages
 		addPage(new Create());
@@ -77,6 +79,7 @@ public class WebServer {
 		//Statistic
 		addPage(new Statistic());
 		
+		//Testpage
 		addPage(new TestPage());
 	}
 

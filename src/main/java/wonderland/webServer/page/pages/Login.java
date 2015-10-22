@@ -43,7 +43,6 @@ public class Login extends Page {
 		User u = WebServer.getUserByName(lg);
 		if (u != null && u.isValid() && u.isPassword(pw)) {
 			response.cookie("OBOOKUID", u.getUserID(), 18000);
-			System.out.println("Login successful for " + lg);
 			pw = null;
 			lg = null;
 			response.redirect("/dashboard");
@@ -52,8 +51,6 @@ public class Login extends Page {
 				loginError = "Can not find User!";
 			else if (!u.isPassword(pw))
 				loginError = "Password is wrong!";
-
-			System.out.println("Login not successful for " + lg);
 			pw = null;
 			lg = null;
 		}

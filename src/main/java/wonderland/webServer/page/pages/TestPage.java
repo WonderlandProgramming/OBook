@@ -47,7 +47,6 @@ public class TestPage extends BasePage {
 				books = null;
 			map.put("books", books);
 			u.setPageConfiguration(map);
-			
 		}
 	}
 

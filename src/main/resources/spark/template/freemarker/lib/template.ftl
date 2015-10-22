@@ -70,10 +70,8 @@
 	                            <i class="icon-user "></i>&nbsp; <i class="icon-chevron-down "></i>
 	                        </a>
 	
-	                        <ul class="dropdown-menu dropdown-user">
-	                            <li><a href="#"><i class="icon-user"></i> Profil ansehen </a>
-	                            </li>
-	                            <li><a href="#"><i class="icon-gear"></i> Einstellungen </a>
+	                        <ul class="dropdown-menu dropdown-messages" style="width: 140px;">
+	                            <li><a href="/user/self"><i class="icon-gear"></i> Einstellungen </a>
 	                            </li>
 	                            <li class="divider"></li>
 	                            <li><a href="/logout"><i class="icon-signout"></i> Ausloggen </a>

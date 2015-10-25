@@ -18,7 +18,7 @@ public class Grade {
 	
 	private String name;
 	private String shortName;
-	private List<BookItem> books = new ArrayList<>();
+	private BookGroup books;
 	private List<BookGroup> bookGroups = new ArrayList<>();
 	
 	/**
@@ -49,10 +49,10 @@ public class Grade {
 	 * @param books the books to be added
 	 * @param boookGroup the bookGroup to be added
 	 */
-	public Grade(String name, String shortName, BookItem[] books, BookGroup[] bookGroups) {
+	public Grade(String name, String shortName, BookGroup books, BookGroup[] bookGroups) {
 		this.name = name;
 		this.shortName = shortName;
-		if(books != null) this.books = Arrays.asList(books);
+		if(books != null) this.books = books;
 		if(bookGroups != null) this.bookGroups = Arrays.asList(bookGroups);
 	}
 	
@@ -121,53 +121,23 @@ public class Grade {
 	/**
 	 * @return the the books
 	 */
-	public BookItem[] getBookItems() {
-		return books.toArray(new BookItem[0]);
+	public BookGroup getBooks() {
+		return books;
 	}
 
 	/**
 	 * @param books the books to set
 	 */
-	public void setBooks(BookItem[] books) {
-		if(books != null) this.books = Arrays.asList(books);
+	public void setBooks(BookGroup books) {
+		if(books != null) this.books = books;
 	}
 	
 	/**
 	 * @return true, if the list contains any books, otherwise false
 	 */
 	public boolean hasBooks() {
-		if(!books.isEmpty()) return true;
+		if(books.getBooks().length > 0) return true;
 		return false;
-	}
-	
-	/**
-	 * Adds a book to the current list.
-	 * 
-	 * @param book the book
-	 */
-	public void addBookItem(BookItem book) {
-		books.add(book);
-	}
-	
-	/**
-	 * Adds books to the current list.
-	 * 
-	 * @param book the book
-	 */
-	public void addBookItems(BookItem[] books) {
-		if(books != null) {
-			List<BookItem> temp = Arrays.asList(books);
-			this.books.addAll(temp);
-		}	
-	}
-	
-	/**
-	 * Removes a book from the list.
-	 * 
-	 * @param book the book to remove
-	 */
-	public void removeBook(BookItem book) {
-		if(books.contains(book)) books.remove(book);
 	}
 	
 	/**
@@ -219,11 +189,29 @@ public class Grade {
 	 * @param book the book to remove
 	 */
 	public void removeBookGroup(BookGroup bookGroup) {
-		books.remove(bookGroup);
+		bookGroups.remove(bookGroup);
+	}
+	
+	public boolean matches(Grade grade) {
+		if (name.equals(grade.getName())) return true;
+		return false;
+	}
+	
+	public boolean matchesAny(Grade[] grades) {
+		for (Grade grade : grades) {
+			if(this.matches(grade)) return true;
+		}
+		return false;
+	}
+	
+	public static String getBookGroupsAsString(BookGroup[] bookGroups) {
+		//TODO
+		return null;
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("Grade[name=%s, shortName=%s, books=%s, bookGroups=%s]", name, shortName, books.size(), bookGroups.size());
+		return String.format("Grade[name=%s, shortName=%s, books=%s, bookGroups=%s]", name, shortName, books.getBooks().length, bookGroups.size());
 	}
+	
 }

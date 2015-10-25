@@ -17,7 +17,7 @@ public class BookGroup {
 
 	private String name;
 	private Color color;
-	private List<BookItem> books = new ArrayList<>();
+	private List<Book> books = new ArrayList<>();
 	
 	// Form Settings
 	private int minimumSelected = -1;
@@ -28,7 +28,7 @@ public class BookGroup {
 	 * @param name the name
 	 * @param books the books
 	 */
-	public BookGroup(String name, BookItem[] books) {
+	public BookGroup(String name, Book[] books) {
 		this.name = name;
 		this.color = new Color(255, 255, 255);
 		if(books != null) this.books = Arrays.asList(books);
@@ -42,7 +42,7 @@ public class BookGroup {
 	 * @param minimum the minimum
 	 * @param maximum the maximum
 	 */
-	public BookGroup(String name, BookItem[] books, Color color, int minimum) {
+	public BookGroup(String name, Book[] books, Color color, int minimum) {
 		this.name = name;
 		this.color = color;
 		if(books != null) this.books = Arrays.asList(books);
@@ -87,14 +87,14 @@ public class BookGroup {
 	/**
 	 * @return the books
 	 */
-	public BookItem[] getBookItems() {
-		return books.toArray(new BookItem[0]);
+	public Book[] getBooks() {
+		return books.toArray(new Book[0]);
 	}
 
 	/**
 	 * @param books the books to set
 	 */
-	public void setBooks(List<BookItem> books) {
+	public void setBooks(List<Book> books) {
 		this.books = books;
 	}
 	
@@ -104,7 +104,7 @@ public class BookGroup {
 	 * @param book the book
 	 * @return true, if the book is contained in the book group
 	 */
-	public boolean containsBookItem(BookItem book) {
+	public boolean containsBookItem(Book book) {
 		if(books.contains(book)) return true;
 		return false;
 	}

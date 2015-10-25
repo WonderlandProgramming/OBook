@@ -3,8 +3,8 @@ package main.java.wonderland.components.writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.wonderland.general.core.Book;
 import main.java.wonderland.general.core.BookGroup;
-import main.java.wonderland.general.core.BookItem;
 import main.java.wonderland.general.core.Grade;
 
 /**
@@ -18,8 +18,8 @@ import main.java.wonderland.general.core.Grade;
 public class ListControl {
 
 	private Grade grade;
-	private List<BookItem> givenBooks = new ArrayList<>();
-	private List<BookItem> selectedBooks = new ArrayList<>();
+	private List<Book> givenBooks = new ArrayList<>();
+	private List<Book> selectedBooks = new ArrayList<>();
 
 	/**
 	 * Main Constructor.
@@ -35,18 +35,18 @@ public class ListControl {
 	private void initialiseLists() {
 		if (grade == null)
 			return;
-		BookItem[] books = grade.getBookItems();
+		Book[] books = grade.getBooks().getBooks();
 		BookGroup[] bookGroups = grade.getBookGroups();
 		givenBooks.clear();
 		selectedBooks.clear();
 		// Add Preset BookItems
-		for (BookItem bookItem : books) {
-			selectedBooks.add(bookItem);
+		for (Book book : books) {
+			selectedBooks.add(book);
 		}
 		// Add BookGroups
 		for (BookGroup bookGroup : bookGroups) {
-			BookItem[] items = bookGroup.getBookItems();
-			for (BookItem bookItem : items) {
+			Book[] items = bookGroup.getBooks();
+			for (Book bookItem : items) {
 				givenBooks.add(bookItem);
 			}
 		}
@@ -58,7 +58,7 @@ public class ListControl {
 	public void updateGivenBooks() {
 		if (grade == null)
 			return;
-		BookItem[] books = grade.getBookItems();
+		Book[] books = grade.getBooks().getBooks();
 		BookGroup[] bookGroups = grade.getBookGroups();
 		// Remove / Add BookGroup BookItems from Minimum value
 		for (BookGroup bookGroup : bookGroups) {
@@ -69,9 +69,9 @@ public class ListControl {
 			}
 		}
 		// Add Preset BookItems to Given if not in Selected
-		for (BookItem bookItem : books) {
-			if (!selectedBooks.contains(bookItem) && !givenBooks.contains(bookItem)) {
-				givenBooks.add(bookItem);
+		for (Book book : books) {
+			if (!selectedBooks.contains(book) && !givenBooks.contains(book)) {
+				givenBooks.add(book);
 			}
 		}
 	}
@@ -86,8 +86,8 @@ public class ListControl {
 	 */
 	private int getInSelected(BookGroup group) {
 		int contained = 0;
-		for (BookItem bookItem : selectedBooks) {
-			if (group.containsBookItem(bookItem)) {
+		for (Book book : selectedBooks) {
+			if (group.containsBookItem(book)) {
 				contained++;
 			}
 		}
@@ -100,7 +100,7 @@ public class ListControl {
 	 * @param group
 	*/
 	private void removeInGiven(BookGroup group) {
-		for (BookItem bookItem : group.getBookItems()) {
+		for (Book bookItem : group.getBooks()) {
 			if (selectedBooks.contains(bookItem)) {
 				selectedBooks.remove(bookItem);
 			}
@@ -108,33 +108,38 @@ public class ListControl {
 	}
 
 	private void addRemainingInGiven(BookGroup group) {
-		for (BookItem bookItem : group.getBookItems()) {
+		for (Book bookItem : group.getBooks()) {
 			if (!givenBooks.contains(bookItem) && !selectedBooks.contains(bookItem)) {
 				givenBooks.add(bookItem);
 			}
 		}
 	}
 
-	public void switchItem(BookItem item) {
-		if (givenBooks.contains(item)) {
-			givenBooks.remove(item);
-			selectedBooks.add(item);
-		} else if (selectedBooks.contains(item)) {
-			selectedBooks.remove(item);
-			givenBooks.add(item);
+	public void switchItem(Book book) {
+		if (givenBooks.contains(book)) {
+			givenBooks.remove(book);
+			selectedBooks.add(book);
+		} else if (selectedBooks.contains(book)) {
+			selectedBooks.remove(book);
+			givenBooks.add(book);
 		} else {
 			System.err.println("The BookItem to switch is not contained in either list.");
 		}
 	}
 
-	public void removeItem(BookItem item) {
-		if (givenBooks.contains(item)) {
-			givenBooks.remove(item);
-		} else if (selectedBooks.contains(item)) {
-			selectedBooks.remove(item);
+	public void removeItem(Book book) {
+		if (givenBooks.contains(book)) {
+			givenBooks.remove(book);
+		} else if (selectedBooks.contains(book)) {
+			selectedBooks.remove(book);
 		} else {
 			System.err.println("The BookItem to remove is not contained in either list.");
 		}
+	}
+	
+	public void updateGrade(Grade grade) {
+		setGrade(grade);
+		initialiseLists();
 	}
 
 	/**
@@ -147,7 +152,7 @@ public class ListControl {
 	/**
 	 * @param grade the grade to set
 	 */
-	public void setGrade(Grade grade) {
+	private void setGrade(Grade grade) {
 		this.grade = grade;
 	}
 

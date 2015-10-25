@@ -12,23 +12,9 @@ public class ColorManager {
 	 * @param grade the grade
 	 * @return the resulting color if existing, otherwise null
 	 */
-	public static Color getResultingColor(Grade grade, BookItem bookItem) {
+	public static Color getResultingColor(Grade grade, BookGroup bookGroup) {
 		// Priority: BookGroups > Subjects > Categories
-		Book book = bookItem.getBook();
-		if (grade.hasBookGroups()) {
-			BookGroup[] bookGroups = grade.getBookGroups();
-			for (BookGroup bookGroup : bookGroups) {
-				if (bookGroup.hasColor() && bookGroup.containsBookItem(bookItem)) {
-					return bookGroup.getColor();
-				}
-			}
-		}
-		if (book.hasSubject() && book.getSubject().hasColor()) {
-			return book.getSubject().getColor();
-		}
-		if (book.hasSubject() && book.getSubject().hasCategory() && book.getSubject().getCategory().hasColor()) {
-			return book.getSubject().getCategory().getColor();
-		}
+		//TODO
 		return null;
 	}
 

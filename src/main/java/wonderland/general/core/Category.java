@@ -2,9 +2,6 @@ package main.java.wonderland.general.core;
 
 import java.awt.Color;
 
-import main.java.wonderland.general.ConLibrary;
-import main.java.wonderland.search.CategorySearch;
-
 /**
  * Represents the category of a book.
  * 
@@ -51,45 +48,12 @@ public class Category {
 		this.shortName = shortName;
 		this.color = color;
 	}
-	
-	/**
-	 * Adds the book category to the list.
-	 */
-	public void addToList() {
-		if (hasName()) {
-			if (CategorySearch.containsName(name)) {
-				System.err.println(String.format("Book Category cannot be added to the list: Duplicated Name (%s).", name));
-				return;
-			}
-			if (CategorySearch.containsShortName(shortName)) {
-				System.err.println(String.format("Book Category cannot be added to the list: Duplicated ShortName (%s).", shortName));
-				return;
-			}
-			ConLibrary.getCategories().add(this);
-		} else {
-			System.err.println("Book Category cannot be added to the list: Invalid name.");
-		}
-	}
-
-	/**
-	 * Removes the book category from the list.
-	 */
-	public void removeFromList() {
-		ConLibrary.getCategories().remove(this);
-	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	/**
@@ -106,13 +70,6 @@ public class Category {
 	public String getShortName() {
 		return shortName;
 	}
-
-	/**
-	 * @param shortName the shortName to set
-	 */
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
 	
 	/**
 	 * @return true, if the short name has been set, otherwise false
@@ -128,19 +85,24 @@ public class Category {
 	public Color getColor() {
 		return color;
 	}
-
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
 	
 	/**
 	 * @return true, if the color has been set
 	 */
 	public boolean hasColor() {
 		return getColor() != null;
+	}
+	
+	public boolean matches(Category category) {
+		if (name.equals(category.getName())) return true;
+		return false;
+	}
+	
+	public boolean matchesAny(Category[] categories) {
+		for (Category category : categories) {
+			if(this.matches(category)) return true;
+		}
+		return false;
 	}
 
 	@Override

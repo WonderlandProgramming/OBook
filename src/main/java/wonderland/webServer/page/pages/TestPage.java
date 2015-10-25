@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import main.java.wonderland.database.action.DBBook;
 import main.java.wonderland.general.core.Book;
-import main.java.wonderland.search.BookSearch;
-import main.java.wonderland.search.criteria.BookCriteria;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
 import main.java.wonderland.webServer.page.BasePage;
@@ -59,9 +58,7 @@ public class TestPage extends BasePage {
 		if (fach != null && newSearch) {
 			u.clearSubConfiguration("books");
 
-			BookCriteria[] crit = { BookCriteria.SUBJECT };
-
-			Book[] books = BookSearch.getBooks(fach, crit);
+			Book[] books = DBBook.getBooks(fach, true, main.java.wonderland.database.criteria.BookCriteria.SUBJECT);
 			for (Book book : books) {
 				HashMap<String, Object> bookHash = new HashMap<>();
 				bookHash.put("name", book.getName());

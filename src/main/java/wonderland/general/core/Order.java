@@ -9,7 +9,6 @@ public class Order {
 	private String ID;
 	private int number = -1;
 	private Grade grade;
-	private OrderStatus status;
 	private List<Book> books = new ArrayList<>();
 	
 	/**
@@ -94,24 +93,25 @@ public class Order {
 	}
 
 	/**
-	 * @return the status
-	 */
-	public OrderStatus getStatus() {
-		return status;
-	}
-
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(OrderStatus status) {
-		this.status = status;
-	}
-
-	/**
 	 * @return the books
 	 */
 	public Book[] getBooks() {
 		return books.toArray(new Book[0]);
+	}
+	
+	/**
+	 * @return true, if the order contains at least one book
+	 */
+	public boolean hasBooks() {
+		return getBooks().length != 0;
+	}
+	
+	/**
+	 * @return true, if the order is valid
+	 */
+	public boolean isValid() {
+		if(hasID() && hasNumber() && hasGrade() && hasBooks()) return true;
+		return false;
 	}
 
 	/**
@@ -120,4 +120,15 @@ public class Order {
 	public void setBooks(Book[] books) {
 		if(books != null) this.books = Arrays.asList(books);
 	}
+	
+	public String getTimestampsAsJSon() {
+		//TODO
+		return null;
+	}
+	
+	public String getBooksAsJSon() {
+		// TODO
+		return null;
+	}
+	
 }

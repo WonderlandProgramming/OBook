@@ -1,7 +1,5 @@
 package main.java.wonderland.general.core;
 
-import java.awt.Image;
-
 /**
  * The BookBuilder builds books with specific properties.
  * 
@@ -15,7 +13,7 @@ public class BookBuilder {
 	private String ID;
 	private String name;
 	private Subject subject;
-	private Image cover;
+	private String cover;
 
 	/**
 	 * Constructs a new BookBuilder instance.
@@ -58,7 +56,7 @@ public class BookBuilder {
 	 *            the cover
 	 * @return the current instance
 	 */
-	public BookBuilder withCover(Image cover) {
+	public BookBuilder withCover(String cover) {
 		this.cover = cover;
 		return this;
 	}

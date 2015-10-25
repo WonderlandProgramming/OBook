@@ -2,24 +2,59 @@ package main.java.wonderland.components.reader;
 
 import java.sql.Timestamp;
 
-import main.java.wonderland.general.core.Order;
+import main.java.wonderland.database.action.DBOrderEntry;
+import main.java.wonderland.error.InvalidPermissionEcxeption;
+import main.java.wonderland.general.core.OrderEntry;
+import main.java.wonderland.general.core.OrderStatus;
 
 public class Panel {
 
 	private String ID;
 	private PanelState status;
-	private Order order;
+	private OrderEntry orderEntry;
 	private int panelCounter;
 	private Timestamp time;
 
 	public Panel(String ID) {
 		this.ID = ID;
+		this.status = PanelState.OPEN;
 	}
-	
-	public void update(Order order) {
-		if(status == PanelState.OPEN) {
-			setOrder(order);
-			setTime(new Timestamp(System.currentTimeMillis()));
+
+	public void assign(OrderEntry order) {
+		if (status == PanelState.OPEN) {
+			setOrderEntry(order);
+			setTimestamp(new Timestamp(System.currentTimeMillis()));
+			setStatus(PanelState.ASSIGNED);
+		}
+	}
+
+	/**
+	 * Updates target panel, setting its status to the next possible one.
+	 * 
+	 * @param panel the panel
+	 */
+	public void update() throws InvalidPermissionEcxeption {
+		OrderEntry order = DBOrderEntry.getOrderEntryByID(orderEntry.getID());
+		if (order != null && order.getStatus() == orderEntry.getStatus()
+				&& order.getTimestamp(OrderStatus.ASSIGNED) == orderEntry.getTimestamp(OrderStatus.ASSIGNED)) {
+			switch (getStatus()) {
+			case ASSIGNED:
+				setStatus(PanelState.IN_PROGESS);
+				break;
+			case IN_PROGESS:
+				setStatus(PanelState.OPEN);
+				orderEntry = null;
+				break;
+			case PRIORITY:
+				setStatus(PanelState.OPEN);
+				orderEntry = null;
+				break;
+			default:
+				System.err.println("No forwarding on this panel possible.");
+				break;
+			}
+		} else {
+			throw new InvalidPermissionEcxeption("The order you want to update does not match with the information in this panel.");
 		}
 	}
 
@@ -45,17 +80,17 @@ public class Panel {
 	}
 
 	/**
-	 * @return the order
+	 * @return the orderEntry
 	 */
-	public Order getOrder() {
-		return order;
+	public OrderEntry getOrderEntry() {
+		return orderEntry;
 	}
 
 	/**
-	 * @param order the order to set
+	 * @param orderEntry the orderEntry to set
 	 */
-	private void setOrder(Order order) {
-		this.order = order;
+	public void setOrderEntry(OrderEntry orderEntry) {
+		this.orderEntry = orderEntry;
 	}
 
 	/**
@@ -75,14 +110,14 @@ public class Panel {
 	/**
 	 * @return the time
 	 */
-	public Timestamp getTime() {
+	public Timestamp getTimestamp() {
 		return time;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	private void setTime(Timestamp time) {
+	private void setTimestamp(Timestamp time) {
 		this.time = time;
 	}
 }

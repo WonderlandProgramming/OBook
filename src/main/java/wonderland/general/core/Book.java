@@ -1,9 +1,5 @@
 package main.java.wonderland.general.core;
 
-import java.awt.Image;
-
-import main.java.wonderland.general.ConLibrary;
-
 /**
  * Represents a classic book.
  * 
@@ -17,7 +13,7 @@ public class Book {
 	private String ID;
 	private String name;
 	private Subject subject;
-	private Image cover;
+	private String cover;
 
 	/**
 	 * Main Constructor.
@@ -33,7 +29,7 @@ public class Book {
 	 * @param grades
 	 *            the grades where the book is used
 	 */
-	public Book(String ID, String name, Subject subject, Image cover) {
+	public Book(String ID, String name, Subject subject, String cover) {
 		this.ID = ID;
 		this.name = name;
 		this.subject = subject;
@@ -41,36 +37,10 @@ public class Book {
 	}
 
 	/**
-	 * Adds the Book to the list.
-	 */
-	public void addToList() {
-		if (hasID()) {
-			ConLibrary.getBooks().add(this);
-		} else {
-			System.err.println("Book cannot be added to the list: Invalid ID.");
-		}
-	}
-
-	/**
-	 * Removes the book from the list.
-	 */
-	public void removeFromList() {
-		ConLibrary.getBooks().remove(this);
-	}
-
-	/**
 	 * @return the iD
 	 */
 	public String getID() {
 		return ID;
-	}
-
-	/**
-	 * @param iD
-	 *            the iD to set
-	 */
-	public void setID(String iD) {
-		ID = iD;
 	}
 
 	/**
@@ -89,14 +59,6 @@ public class Book {
 	}
 
 	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
 	 * @return true, if the name has been set, otherwise false
 	 */
 	public boolean hasName() {
@@ -112,14 +74,6 @@ public class Book {
 	}
 
 	/**
-	 * @param subject
-	 *            the subject to set
-	 */
-	public void setSubject(Subject subject) {
-		this.subject = subject;
-	}
-
-	/**
 	 * @return true, if the subject has been set, otherwise false
 	 */
 	public boolean hasSubject() {
@@ -130,16 +84,8 @@ public class Book {
 	/**
 	 * @return the cover
 	 */
-	public Image getCover() {
+	public String getCover() {
 		return cover;
-	}
-
-	/**
-	 * @param cover
-	 *            the cover to set
-	 */
-	public void setCover(Image cover) {
-		this.cover = cover;
 	}
 
 	/**
@@ -147,6 +93,34 @@ public class Book {
 	 */
 	public boolean hasCover() {
 		if (cover != null) return true;
+		return false;
+	}
+	
+	/**
+	 * @return true, if the book is valid
+	 */
+	public boolean isValid() {
+		if(hasID() && hasName()) return true;
+		return false;
+	}
+	
+	/**
+	 * @param book the book
+	 * @return true if the two books match
+	 */
+	public boolean matches(Book book) {
+		if (ID.equals(book.getID())) return true;
+		return false;
+	}
+	
+	/**
+	 * @param books the books
+	 * @return true, if the book matches at least one other book in the list
+	 */
+	public boolean matchesAny(Book[] books) {
+		for (Book book : books) {
+			if(this.matches(book)) return true;
+		}
 		return false;
 	}
 	

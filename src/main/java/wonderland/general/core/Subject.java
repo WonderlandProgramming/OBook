@@ -2,8 +2,6 @@ package main.java.wonderland.general.core;
 
 import java.awt.Color;
 
-import main.java.wonderland.general.ConLibrary;
-
 /**
  * Represents the subject of a book.
  * 
@@ -53,37 +51,12 @@ public class Subject {
 		this.category = category;
 		this.color = color;
 	}
-	
-	/**
-	 * Adds the book category to the list.
-	 */
-	public void addToList() {
-		if (hasName()) {
-			ConLibrary.getSubjects().add(this);
-		} else {
-			System.err.println("Subject cannot be added to the list: Invalid name.");
-		}
-	}
-
-	/**
-	 * Removes the book category from the list.
-	 */
-	public void removeFromList() {
-		ConLibrary.getSubjects().remove(this);
-	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	/**
@@ -100,13 +73,6 @@ public class Subject {
 	public String getShortName() {
 		return shortName;
 	}
-
-	/**
-	 * @param shortName the shortName to set
-	 */
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
-	}
 	
 	/**
 	 * @return true, if the short name has been set, otherwise false
@@ -121,13 +87,6 @@ public class Subject {
 	 */
 	public Category getCategory() {
 		return category;
-	}
-
-	/**
-	 * @param category the category to set
-	 */
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 	
 	/**
@@ -144,19 +103,32 @@ public class Subject {
 	public Color getColor() {
 		return color;
 	}
-
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
 	
 	/**
 	 * @return true, if the color has been set
 	 */
 	public boolean hasColor() {
 		return getColor() != null;
+	}
+	
+	/**
+	 * @return true, if the subject is valid
+	 */
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public boolean matches(Subject subject) {
+		if (name.equals(subject.getName())) return true;
+		return false;
+	}
+	
+	public boolean matchesAny(Subject[] subjects) {
+		for (Subject subject : subjects) {
+			if(this.matches(subject)) return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -167,4 +139,5 @@ public class Subject {
 		}
 		return String.format("Subject[name=%s, shortName=%s, category=%s]", name, shortName, category);
 	}
+
 }

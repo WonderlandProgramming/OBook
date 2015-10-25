@@ -151,6 +151,7 @@ public class User implements IWebElement{
 		HashMap<String, Object> userdata = new HashMap<>();
 		userdata.put("username", username);
 		userdata.put("loginlevel", loginlevel.name());
+		userdata.put("userID", userID);
 		return userdata;
 	}
 }

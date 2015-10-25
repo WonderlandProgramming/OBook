@@ -56,7 +56,6 @@ public abstract class BasePage extends Page {
 		this.addSideBarElement(statistik);
 		
 		
-		
 		//TopBar Elements
 		TopBarElements topBar1 = new TopBarElements("icon-envelope-alt", "Kein Inhalt", "#", "Zu allen Inhalten");
 		topBar1.addTopBarElement(new TopBarElement("Lukas Peer", "Das ist ein Test", 5, LoginLevel.User));

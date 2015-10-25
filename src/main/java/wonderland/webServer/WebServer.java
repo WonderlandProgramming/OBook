@@ -22,6 +22,7 @@ import main.java.wonderland.webServer.page.pages.communication.Chats;
 import main.java.wonderland.webServer.page.pages.communication.Log;
 import main.java.wonderland.webServer.page.pages.management.Config;
 import main.java.wonderland.webServer.page.pages.management.UserConfig;
+import main.java.wonderland.webServer.page.pages.mobile.MobileTestPage;
 import main.java.wonderland.webServer.page.pages.orders.Create;
 import main.java.wonderland.webServer.page.pages.orders.Edit;
 import main.java.wonderland.webServer.page.pages.orders.Finish;
@@ -32,7 +33,7 @@ public class WebServer {
 	private static HashMap<String, User> userList = new HashMap<>();
 
 	public WebServer() {
-		port(80);
+		port(getHerokuAssignedPort());
 		staticFileLocation("/public");
 		webPages = new ArrayList<>();
 
@@ -45,10 +46,28 @@ public class WebServer {
 		initUsers();
 	}
 	
+	static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 80; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
+	
 	private void initUsers(){
 		addUser(new User("admin", "admin"), LoginLevel.Administrator);
 		addUser(new User("User", "User"), LoginLevel.User);
 		addUser(new User("LPeer", "admin"), LoginLevel.SuperAdministrator);
+	}
+	
+	public static List<User> getUser(){
+		List<User> rt = new ArrayList<>();
+			
+		for (User u : userList.values()) {
+			rt.add(u);
+		}
+		
+		return rt;
 	}
 	
 	private void init(){
@@ -81,6 +100,7 @@ public class WebServer {
 		
 		//Testpage
 		addPage(new TestPage());
+		addPage(new MobileTestPage());
 	}
 
 	public void addPage(Page page) {

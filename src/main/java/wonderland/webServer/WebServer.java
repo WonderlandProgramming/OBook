@@ -33,7 +33,7 @@ public class WebServer {
 	private static HashMap<String, User> userList = new HashMap<>();
 
 	public WebServer() {
-		port(getHerokuAssignedPort());
+		port(getAssignedPort());
 		staticFileLocation("/public");
 		webPages = new ArrayList<>();
 
@@ -46,12 +46,12 @@ public class WebServer {
 		initUsers();
 	}
 	
-	static int getHerokuAssignedPort() {
+	static int getAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
-        return 80; //return default port if heroku-port isn't set (i.e. on localhost)
+        return 80;
     }
 	
 	private void initUsers(){

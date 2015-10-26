@@ -22,7 +22,6 @@ import main.java.wonderland.webServer.page.pages.communication.Chats;
 import main.java.wonderland.webServer.page.pages.communication.Log;
 import main.java.wonderland.webServer.page.pages.management.Config;
 import main.java.wonderland.webServer.page.pages.management.UserConfig;
-import main.java.wonderland.webServer.page.pages.mobile.MobileTestPage;
 import main.java.wonderland.webServer.page.pages.orders.Create;
 import main.java.wonderland.webServer.page.pages.orders.Edit;
 import main.java.wonderland.webServer.page.pages.orders.Finish;
@@ -100,7 +99,6 @@ public class WebServer {
 		
 		//Testpage
 		addPage(new TestPage());
-		addPage(new MobileTestPage());
 	}
 
 	public void addPage(Page page) {

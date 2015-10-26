@@ -5,6 +5,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import main.java.wonderland.webServer.WebServer;
@@ -36,10 +37,18 @@ public abstract class Page {
 
 	protected abstract void setupPage(User u);
 
-	protected abstract void onPost(String key, String value, User u);
+	protected void onPost(String key, String value, User u){
+	}
 
-	protected abstract void onPostEnd(Response response, User u);
+	@Deprecated
+	protected void onPostEnd(Response response, User u){
+		
+	}
 
+	protected void onPostComplete(User u, Map<String, Object> returnValues){
+		
+	}
+	
 	protected void addBeforeFilter(Filter filter) {
 		before(subPath, filter);
 	}
@@ -61,7 +70,7 @@ public abstract class Page {
 			Map<String, String> currentUser = request.cookies();
 			String UIDinCookies = currentUser.get("OBOOKUID");
 			// if current page needs you to be logged in
-			
+
 			if (page.loginLevel.getLevel() > LoginLevel.NotLoggedIn.getLevel()) {
 				// if not logged in
 				if (UIDinCookies == null || UIDinCookies.isEmpty() || WebServer.getUser(UIDinCookies) == null) {
@@ -90,25 +99,33 @@ public abstract class Page {
 		@Override
 		public Object handle(Request request, Response response) throws Exception {
 			User u = WebServer.getUser(request.cookies().get("OBOOKUID"));
-			if(u == null) u = new User();
-			
+			if (u == null)
+				u = new User();
+
 			u.setCurrentPage(subPath);
+
+			
 			
 			if (request.requestMethod() == "GET") {
 				page.setupPage(u);
 				return new FreeMarkerEngine().render(new ModelAndView(u.getPageConfiguration(), page.ftlPath));
 			} else {
+				Map<String, Object> postPage = new HashMap<>();
+				
 				QueryParamsMap map = request.queryMap();
 				for (String element : map.toMap().keySet()) {
 					if (map.get(element).values().length > 1) {
 						for (String str : map.get(element).values()) {
+							postPage.put(element, str);
 							page.onPost(element, str, u);
 						}
 					} else {
+						postPage.put(element, map.get(element).value());
 						page.onPost(element, map.get(element).value(), u);
 					}
 				}
 				page.onPostEnd(response, u);
+				page.onPostComplete(u, postPage);
 				page.setupPage(u);
 				return new FreeMarkerEngine().render(new ModelAndView(u.getPageConfiguration(), page.ftlPath));
 			}

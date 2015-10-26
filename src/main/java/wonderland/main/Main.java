@@ -4,6 +4,7 @@ import main.java.wonderland.database.DBConnetcor;
 import main.java.wonderland.database.action.DBBook;
 import main.java.wonderland.database.criteria.BookCriteria;
 import main.java.wonderland.general.core.Book;
+import main.java.wonderland.webServer.WebServer;
 
 /**
  * Application Main class.
@@ -24,6 +25,8 @@ public class Main {
 			System.out.println(book.toString());
 		}
 		System.out.println("------------------");
+		
+		new WebServer();
 	}
 
 }

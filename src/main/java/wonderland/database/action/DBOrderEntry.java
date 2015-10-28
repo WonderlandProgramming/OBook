@@ -24,10 +24,11 @@ public class DBOrderEntry {
 	public static OrderEntry[] getAll() {
 		return getOrderEntries("%", false, OrderEntryCriteria.ID);
 	}
-	
+
 	public static OrderEntry getOrderEntryByID(String ID) {
 		OrderEntry[] orders = getOrderEntries(ID, true, OrderEntryCriteria.ID);
-		if(orders != null && orders.length > 0) return orders[0];
+		if (orders != null && orders.length > 0)
+			return orders[0];
 		return null;
 	}
 
@@ -45,13 +46,14 @@ public class DBOrderEntry {
 
 	public static OrderStatus getOrderStatusByID(String ID) {
 		OrderEntry order = getOrderEntryByID(ID);
-		if(order != null) return order.getStatus();
+		if (order != null)
+			return order.getStatus();
 		return null;
 	}
 
 	public static void setOrderStatusByID(String ID, OrderStatus status) {
 		OrderEntry order = getOrderEntryByID(ID);
-		if(order != null) {
+		if (order != null) {
 			order.setStatus(status);
 			updateOrder(order);
 		}
@@ -59,48 +61,76 @@ public class DBOrderEntry {
 
 	public static Timestamp getTimestampByID(String ID, OrderStatus status) {
 		OrderEntry order = getOrderEntryByID(ID);
-		if(order != null) return order.getTimestamp(status);
+		if (order != null)
+			return order.getTimestamp(status);
 		return null;
 	}
 
 	public static void setTimestampByID(String ID, OrderStatus status, Timestamp timestamp) {
 		OrderEntry order = getOrderEntryByID(ID);
-		if(order != null) {
+		if (order != null) {
 			order.setTimestamp(status, timestamp);
 			updateOrder(order);
 		}
-		
+
 	}
 
-	public static OrderEntry[] getOrderEntries(String match, boolean exact, OrderEntryCriteria criteria) {
-		if (criteria == OrderEntryCriteria.ALL) {
-			return getOrderEntriesAllCriteria(match, exact, criteria);
-		} else if (OrderEntryCriteria.convertToDatabase(criteria) != null) {
-			return getOrderEntriesSingleCriteria(match, exact, criteria);
+	/**
+	 * 
+	 * Accesses the database and returns an array of books that matches the
+	 * given search criteria.
+	 * 
+	 * @param match the string to search for
+	 * @param exact true if the match has to be exact (search string has to
+	 *        match to the compared string completely) or false if the match has
+	 *        to be like the compared string
+	 * @param criteria the criteria to search for
+	 * @return an array containing the search results (an empty array if no
+	 *         results found) or null if the search criteria is invalid
+	 */
+	public static OrderEntry[] getOrderEntries(String match, boolean exact, OrderEntryCriteria... criteria) {
+		boolean containsAll = false;
+		for (OrderEntryCriteria orderEntryCriteria : criteria) {
+			if (orderEntryCriteria == OrderEntryCriteria.ALL) {
+				containsAll = true;
+			}
 		}
-		return null;
+		if (containsAll) {
+			return getOrderEntriesFromCriteria(match, exact, OrderEntryCriteria.values());
+		} else {
+			return getOrderEntriesFromCriteria(match, exact, criteria);
+		}
 	}
 
-	private static OrderEntry[] getOrderEntriesSingleCriteria(String match, boolean exact, OrderEntryCriteria criteria) {
+	@SuppressWarnings("unused")
+	private static OrderEntry[] getOrderEntriesSingleCriteria(String match, boolean exact,
+			OrderEntryCriteria criteria) {
 		String converted = OrderEntryCriteria.convertToDatabase(criteria);
 		String query = QueryFactory.getStandardSelectQuery(DBVariables.ORDERS_TABLE, match, exact, converted);
 		ResultSet results = DBConnetcor.executeQuery(query);
 		return ObjectConverter.convertToOrderEntry(results);
 	}
 
-	private static OrderEntry[] getOrderEntriesAllCriteria(String match, boolean exact, OrderEntryCriteria criteria) {
+	private static OrderEntry[] getOrderEntriesFromCriteria(String match, boolean exact,
+			OrderEntryCriteria[] criteria) {
+		List<OrderEntryCriteria> dealtWith = new ArrayList<>();
 		List<OrderEntry> orders = new ArrayList<>();
-		for (OrderEntryCriteria crit : OrderEntryCriteria.values()) {
-			String converted = OrderEntryCriteria.convertToDatabase(crit);
-			if (converted != null) {
-				String query = QueryFactory.getStandardSelectQuery(DBVariables.ORDERS_TABLE, match, exact, converted);
-				ResultSet results = DBConnetcor.executeQuery(query);
-				List<OrderEntry> search = Arrays.asList(ObjectConverter.convertToOrderEntry(results));
-				for (OrderEntry order : search) {
-					if (!order.equalsAny(orders.toArray(new OrderEntry[0])))
-						orders.add(order);
+		for (OrderEntryCriteria crit : criteria) {
+			if (!dealtWith.contains(crit)) {
+				String converted = OrderEntryCriteria.convertToDatabase(crit);
+				if (converted != null) {
+					String query = QueryFactory.getStandardSelectQuery(DBVariables.ORDERS_TABLE, match, exact,
+							converted);
+					ResultSet results = DBConnetcor.executeQuery(query);
+					List<OrderEntry> search = Arrays.asList(ObjectConverter.convertToOrderEntry(results));
+					for (OrderEntry order : search) {
+						if (!order.equalsAny(orders.toArray(new OrderEntry[0])))
+							orders.add(order);
+					}
 				}
+				dealtWith.add(crit);
 			}
+
 		}
 		return orders.toArray(new OrderEntry[0]);
 	}

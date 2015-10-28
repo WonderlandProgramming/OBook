@@ -30,7 +30,7 @@ public class DBBook {
 	public static Book[] getAll() {
 		return getBooks("%", false, BookCriteria.ID);
 	}
-	
+
 	/**
 	 * Accesses the database and returns a book with a given ID if existing.
 	 * 
@@ -75,8 +75,8 @@ public class DBBook {
 
 	/**
 	 * 
-	 * Accesses the database and returns an array of books that matches the given
-	 * search criteria.
+	 * Accesses the database and returns an array of books that matches the
+	 * given search criteria.
 	 * 
 	 * @param match the string to search for
 	 * @param exact true if the match has to be exact (search string has to
@@ -86,7 +86,7 @@ public class DBBook {
 	 * @return an array containing the search results (an empty array if no
 	 *         results found) or null if the search criteria is invalid
 	 */
-	public static Book[] getBooks(String match, boolean exact, BookCriteria ... criteria) {
+	public static Book[] getBooks(String match, boolean exact, BookCriteria... criteria) {
 		boolean containsAll = false;
 		for (BookCriteria bookCriteria : criteria) {
 			if (bookCriteria == BookCriteria.ALL) {
@@ -101,8 +101,8 @@ public class DBBook {
 	}
 
 	/**
-	 * Accesses the database and returns an array of books that matches the given
-	 * search criteria.
+	 * Accesses the database and returns an array of books that matches the
+	 * given search criteria.
 	 * 
 	 * @param match the string to search for
 	 * @param exact true if the match has to be exact (search string has to
@@ -119,8 +119,8 @@ public class DBBook {
 	}
 
 	/**
-	 * Accesses the database and returns an array of books that matches the given
-	 * search criteria.
+	 * Accesses the database and returns an array of books that matches the
+	 * given search criteria.
 	 * 
 	 * @param match the string to search for
 	 * @param exact true if the match has to be exact (search string has to
@@ -129,17 +129,22 @@ public class DBBook {
 	 * @return
 	 */
 	private static Book[] getBooksFromCriteria(String match, boolean exact, BookCriteria[] criteria) {
+		List<BookCriteria> dealtWith = new ArrayList<>();
 		List<Book> books = new ArrayList<>();
 		for (BookCriteria crit : criteria) {
-			String converted = BookCriteria.convertToDatabase(crit);
-			if (converted != null) {
-				String query = QueryFactory.getStandardSelectQuery(DBVariables.BOOKS_TABLE, match, exact, converted);
-				ResultSet results = DBConnetcor.executeQuery(query);
-				List<Book> search = Arrays.asList(ObjectConverter.convertToBooks(results));
-				for (Book book : search) {
-					if (!book.equalsAny(books.toArray(new Book[0])))
-						books.add(book);
+			if (!dealtWith.contains(crit)) {
+				String converted = BookCriteria.convertToDatabase(crit);
+				if (converted != null) {
+					String query = QueryFactory.getStandardSelectQuery(DBVariables.BOOKS_TABLE, match, exact,
+							converted);
+					ResultSet results = DBConnetcor.executeQuery(query);
+					List<Book> search = Arrays.asList(ObjectConverter.convertToBooks(results));
+					for (Book book : search) {
+						if (!book.equalsAny(books.toArray(new Book[0])))
+							books.add(book);
+					}
 				}
+				dealtWith.add(crit);
 			}
 		}
 		return books.toArray(new Book[0]);

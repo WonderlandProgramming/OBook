@@ -1,9 +1,5 @@
 package main.java.wonderland.main;
 
-import main.java.wonderland.database.DBConnetcor;
-import main.java.wonderland.database.action.DBBook;
-import main.java.wonderland.database.criteria.BookCriteria;
-import main.java.wonderland.general.core.Book;
 import main.java.wonderland.webServer.WebServer;
 
 /**
@@ -16,16 +12,15 @@ import main.java.wonderland.webServer.WebServer;
  */
 public class Main {
 
+	/*
+	 * Ideeen:
+	 * Bei der ausgabe der nummer error wenn die nummer noch nicht fertiggestellt ist.
+	 * 
+	 * Mängel:
+	 * Book muss IWebElement implementieren!
+	 * 
+	 */
 	public static void main(String[] args) {
-		
-		// Main
-		DBConnetcor.defaultConnect();
-		Book[] res = DBBook.getBooks("%", false, BookCriteria.ID);
-		for (Book book : res) {
-			System.out.println(book.toString());
-		}
-		System.out.println("------------------");
-		
 		new WebServer();
 	}
 

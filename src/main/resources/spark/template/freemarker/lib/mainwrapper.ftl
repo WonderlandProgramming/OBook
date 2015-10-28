@@ -43,7 +43,7 @@
 	 
 	 <!-- FOOTER -->
 	    <div id="footer">
-	        <p>&copy;  &nbsp;2015 L. Kannenberg &amp; L.Peer &nbsp;</p>
+	        <p>&copy;  &nbsp;2012-2015  Wonderland Programming [L. Kannenberg &amp; L.Peer]&nbsp;</p>
 	    </div>
 	    <!--END FOOTER -->
 	     <!-- GLOBAL SCRIPTS -->

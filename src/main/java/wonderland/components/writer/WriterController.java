@@ -22,7 +22,7 @@ public class WriterController {
 	 * 
 	 * @throws InvalidOrderException if the order is not valid
 	 */
-	public void createOrder(Order order) throws InvalidOrderException {
+	public static void createOrder(Order order) throws InvalidOrderException {
 		if(order.isValid()) {
 			// TODO Add order to list
 		} else {

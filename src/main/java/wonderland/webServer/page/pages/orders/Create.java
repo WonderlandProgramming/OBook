@@ -62,6 +62,9 @@ public class Create extends BasePage {
 					
 					System.out.println(vorauswahl + ":" + klasse + ":" + nummer + ":" + zusatzinformationen);
 					
+					
+					//Order o = new order(x,y,z)
+					//WriterController.addOrder(o)
 					currentID++;
 				}
 

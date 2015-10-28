@@ -21,7 +21,7 @@ import main.java.wonderland.general.UIDGenerator;
  * @see {@link UIDGenerator} {@link BookBuilder}
  *
  */
-public class Book extends Serial {
+public class Book extends Serial{
 
 	// Logger
 	private static final Logger log = LogManager.getLogger(Book.class.getName());

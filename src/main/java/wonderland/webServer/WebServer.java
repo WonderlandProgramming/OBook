@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
 import main.java.wonderland.webServer.page.Page;
@@ -28,11 +31,17 @@ import main.java.wonderland.webServer.page.pages.orders.Finish;
 import main.java.wonderland.webServer.page.pages.orders.Process;
 
 public class WebServer {
+	// Logger
+	private static final Logger log = LogManager.getLogger(WebServer.class.getName());
+	
 	private List<Page> webPages;
 	private static HashMap<String, User> userList = new HashMap<>();
 
 	public WebServer() {
+		
+		log.info("WebServer is now starting.");
 		port(getAssignedPort());
+		
 		staticFileLocation("/public");
 		webPages = new ArrayList<>();
 
@@ -41,8 +50,13 @@ public class WebServer {
 			res.redirect("/dashboard");
 			return "";
 		});
+
+		log.info("WebServer inititalistation now starting");
 		init();
+		log.info("WebServer all Pages are now set up.");
+		log.info("WebServer is now setting up Users.");
 		initUsers();
+		log.info("WebServer is now online.");
 	}
 	
 	static int getAssignedPort() {

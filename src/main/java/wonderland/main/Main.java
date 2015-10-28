@@ -1,6 +1,13 @@
 package main.java.wonderland.main;
 
-import main.java.wonderland.webServer.WebServer;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import main.java.wonderland.components.reader.ReaderController;
+import main.java.wonderland.components.writer.WriterController;
+import main.java.wonderland.database.DBConnetcor;
+import main.java.wonderland.general.core.Book;
 
 /**
  * Application Main class.
@@ -12,16 +19,23 @@ import main.java.wonderland.webServer.WebServer;
  */
 public class Main {
 
-	/*
-	 * Ideeen:
-	 * Bei der ausgabe der nummer error wenn die nummer noch nicht fertiggestellt ist.
-	 * 
-	 * Mängel:
-	 * Book muss IWebElement implementieren!
-	 * 
-	 */
+	private static final Logger log = LogManager.getLogger(Main.class.getName());
+	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		new WebServer();
+		
+		log.log(Level.INFO, "Starting OBook Services.");
+		// Main
+		log.log(Level.INFO, "Starting Connection to OBook Database.");
+		DBConnetcor.defaultConnect();
+		ReaderController rc = new ReaderController();
+		WriterController wc = new WriterController();
+		
+		Book b = new Book("001", "", null, null);
+		b.isValid();
+		
+		rc.addPanelGroup("001", 1);
+
 	}
 
 }

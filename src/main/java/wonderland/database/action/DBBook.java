@@ -86,13 +86,18 @@ public class DBBook {
 	 * @return an array containing the search results (an empty array if no
 	 *         results found) or null if the search criteria is invalid
 	 */
-	public static Book[] getBooks(String match, boolean exact, BookCriteria criteria) {
-		if (criteria == BookCriteria.ALL) {
-			return getBooksAllCriteria(match, exact);
-		} else if (BookCriteria.convertToDatabase(criteria) != null) {
-			return getBooksSingleCriteria(match, exact, criteria);
+	public static Book[] getBooks(String match, boolean exact, BookCriteria ... criteria) {
+		boolean containsAll = false;
+		for (BookCriteria bookCriteria : criteria) {
+			if (bookCriteria == BookCriteria.ALL) {
+				containsAll = true;
+			}
 		}
-		return null;
+		if (containsAll) {
+			return getBooksFromCriteria(match, exact, BookCriteria.values());
+		} else {
+			return getBooksFromCriteria(match, exact, criteria);
+		}
 	}
 
 	/**
@@ -123,9 +128,9 @@ public class DBBook {
 	 *        to be like the compared string
 	 * @return
 	 */
-	private static Book[] getBooksAllCriteria(String match, boolean exact) {
+	private static Book[] getBooksFromCriteria(String match, boolean exact, BookCriteria[] criteria) {
 		List<Book> books = new ArrayList<>();
-		for (BookCriteria crit : BookCriteria.values()) {
+		for (BookCriteria crit : criteria) {
 			String converted = BookCriteria.convertToDatabase(crit);
 			if (converted != null) {
 				String query = QueryFactory.getStandardSelectQuery(DBVariables.BOOKS_TABLE, match, exact, converted);

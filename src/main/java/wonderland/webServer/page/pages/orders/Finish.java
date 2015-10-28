@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import main.java.wonderland.general.core.Book;
-import main.java.wonderland.general.core.Grade;
 import main.java.wonderland.general.core.Order;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
@@ -58,7 +57,7 @@ public class Finish extends BasePage {
 			map.put("orderID", orderID);
 			
 			Book[] bookArray = {};
-			Order o = new Order("TestOrder", 100, new Grade("Mathe"), bookArray); // = Ordermanager.findLatestByID(orderID);
+			Order o = null; // = Ordermanager.findLatestByID(orderID);
 			
 			if(o != null){
 				HashMap<String, Object> currentOrder = new HashMap<>();

@@ -81,7 +81,7 @@ public class DBSubject {
 				ResultSet results = DBConnetcor.executeQuery(query);
 				List<Subject> search = Arrays.asList(ObjectConverter.convertToSubjects(results));
 				for (Subject subject : search) {
-					if (!subject.matchesAny(subjects.toArray(new Subject[0])))
+					if (!subject.equalsAny(subjects.toArray(new Subject[0])))
 						subjects.add(subject);
 				}
 			}

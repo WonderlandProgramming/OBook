@@ -1,10 +1,17 @@
 package main.java.wonderland.components.writer;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import main.java.wonderland.error.InvalidOrderException;
 import main.java.wonderland.general.core.Grade;
 import main.java.wonderland.general.core.Order;
+import main.java.wonderland.general.core.OrderEntry;
 
 public class WriterController {
+	
+	private static Logger log = LogManager.getLogger(WriterController.class.getName());
 	
 	private ListControl listControl;
 	
@@ -14,7 +21,8 @@ public class WriterController {
 	 * @param page
 	 */
 	public WriterController() {
-	
+		log.log(Level.INFO, "Starting OBook WriterController Service.");
+		log.log(Level.INFO, "OBook WriterController Service initialized.");
 	}
 	
 	/**
@@ -22,16 +30,23 @@ public class WriterController {
 	 * 
 	 * @throws InvalidOrderException if the order is not valid
 	 */
-	public static void createOrder(Order order) throws InvalidOrderException {
+	public void createOrder(Order order) throws InvalidOrderException {
 		if(order.isValid()) {
-			// TODO Add order to list
+			OrderEntry entry = new OrderEntry(order);
+			entry.createInDatabase();
 		} else {
-			throw new InvalidOrderException("The order is not valid.");
+			throw new InvalidOrderException(order);
 		}
 	}
 	
-	public void initialiseListControl(Grade grade) {
-		listControl = new ListControl(grade);
+	/**
+	 * Initializes the ListControl with a given grade.
+	 * 
+	 * @param grade the grade
+	 * @param defaultSize the default list size
+	 */
+	public void initialiseListControl(Grade grade, int defaultSize) {
+		listControl = new ListControl(grade, defaultSize);
 	}
 
 	/**

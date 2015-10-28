@@ -132,7 +132,7 @@ public class DBBook {
 				ResultSet results = DBConnetcor.executeQuery(query);
 				List<Book> search = Arrays.asList(ObjectConverter.convertToBooks(results));
 				for (Book book : search) {
-					if (!book.matchesAny(books.toArray(new Book[0])))
+					if (!book.equalsAny(books.toArray(new Book[0])))
 						books.add(book);
 				}
 			}

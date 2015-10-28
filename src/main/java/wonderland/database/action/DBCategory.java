@@ -82,7 +82,7 @@ public class DBCategory {
 				ResultSet results = DBConnetcor.executeQuery(query);
 				List<Category> search = Arrays.asList(ObjectConverter.convertToCategories(results));
 				for (Category category : search) {
-					if (!category.matchesAny(categories.toArray(new Category[0])))
+					if (!category.equalsAny(categories.toArray(new Category[0])))
 						categories.add(category);
 				}
 			}

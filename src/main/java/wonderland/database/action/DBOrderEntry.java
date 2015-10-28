@@ -97,7 +97,7 @@ public class DBOrderEntry {
 				ResultSet results = DBConnetcor.executeQuery(query);
 				List<OrderEntry> search = Arrays.asList(ObjectConverter.convertToOrderEntry(results));
 				for (OrderEntry order : search) {
-					if (!order.matchesAny(orders.toArray(new OrderEntry[0])))
+					if (!order.equalsAny(orders.toArray(new OrderEntry[0])))
 						orders.add(order);
 				}
 			}

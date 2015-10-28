@@ -54,7 +54,8 @@ public class Panel {
 				break;
 			}
 		} else {
-			throw new InvalidPermissionEcxeption("The order you want to update does not match with the information in this panel.");
+			throw new InvalidPermissionEcxeption(
+					"The order you want to update does not match with the information in this panel.");
 		}
 	}
 

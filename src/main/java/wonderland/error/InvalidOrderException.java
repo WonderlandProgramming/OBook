@@ -1,5 +1,7 @@
 package main.java.wonderland.error;
 
+import main.java.wonderland.general.core.Order;
+
 public class InvalidOrderException extends Exception {
 
 	private static final long serialVersionUID = -2924282720264175140L;
@@ -7,8 +9,8 @@ public class InvalidOrderException extends Exception {
 	/**
 	 * Throws a new InvalidOrderException.
 	 */
-	public InvalidOrderException() {
-
+	public InvalidOrderException(Order order) {
+		super(getMessage(order));
 	}
 
 	public InvalidOrderException(String message) {
@@ -21,6 +23,19 @@ public class InvalidOrderException extends Exception {
 
 	public InvalidOrderException(String message, Throwable cause) {
 		super(message, cause);
+	}
+	
+	private static String getMessage(Order order) {
+		if (!order.hasID()) {
+			return "Der Auftrag hat keine ID.";
+		}
+		if (!order.hasNumber()) {
+			return "Der Auftrag hat keine Auftragsnummer.";
+		}
+		if (!order.hasBooks()) {
+			return "Der Auftrag hat keine Bücher zugewiesen.";
+		}
+		return null;
 	}
 
 }

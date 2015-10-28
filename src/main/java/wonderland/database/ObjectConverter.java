@@ -19,6 +19,7 @@ public class ObjectConverter {
 	 * @param results the result set
 	 * @return an array of books
 	 */
+	@SuppressWarnings("unused")
 	public static Book[] convertToBooks(ResultSet results) {
 		List<Book> books = new ArrayList<>();
 		if (results == null) return new Book[0];
@@ -28,7 +29,7 @@ public class ObjectConverter {
 				String name = results.getString(DBVariables.BOOKS_NAME);
 				String subject = results.getString(DBVariables.BOOKS_SUBJECT);
 				String cover = results.getString(DBVariables.BOOKS_COVER);
-				Book book = new Book(ID, name, new Subject(subject), cover);
+				Book book = new Book(ID, name, null, cover);
 				if (book.isValid())
 					books.add(book);
 			}

@@ -11,26 +11,42 @@ import main.java.wonderland.main.Settings;
 public class PanelGroup {
 
 	private String userID;
+	private boolean isActive = true;
 	private List<Panel> panels = new ArrayList<>();
-	
+
 	private int targetPanelCount;
 	private boolean lockPanels = false;
-	
+
+	/**
+	 * Constructs a new PanelGroup.
+	 * 
+	 * @param orderQueue the order queue
+	 * @param userID the user ID
+	 * @param initSize the initial size
+	 */
 	public PanelGroup(OrderQueue orderQueue, String userID, int initSize) {
 		this.userID = userID;
 		initPanels(initSize);
 	}
-	
+
 	/**
 	 * Validates if each panel still matches the maximum time criteria,
-	 * otherwise it will be put into priority mode.
+	 * otherwise it will be put into priority mode. Orders from Panels already
+	 * in Priority mode will be removed after a set amount of time and if
+	 * occurred, the panel group will be set to inactive.
 	 */
 	public void checkTimePriority() {
 		long current = System.currentTimeMillis();
 		for (Panel panel : panels) {
 			if (panel.getStatus() == PanelState.ASSIGNED) {
-				if ((panel.getTimestamp().getTime() - current) >= Settings.NEEDED_DURATION) {
+				if ((panel.getTimestamp().getTime() - current) >= Settings.NEEDED_PRIORITY_DURATION) {
 					panel.setStatus(PanelState.PRIORITY);
+				}
+			} else if (panel.getStatus() == PanelState.PRIORITY) {
+				if ((panel.getTimestamp().getTime() - current) >= Settings.NEEDED_INACTIVE_DURATION) {
+					panel.getOrderEntry().setStatus(OrderStatus.UNASSIGNED);
+					panel.setStatus(PanelState.OPEN);
+					setActive(false);
 				}
 			}
 		}
@@ -63,7 +79,7 @@ public class PanelGroup {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Updates the current amount of panels, depending on the active and target
 	 * panel count. If no more panels can be removed (as it would result in loss
@@ -74,7 +90,8 @@ public class PanelGroup {
 	public boolean updatePanelCount() {
 		if (getPanelCount() < targetPanelCount) {
 			for (int i = getPanelCount(); i <= targetPanelCount; i++) {
-				panels.add(new Panel(UIDGenerator.genNextID())); // TODO Set panel ID
+				panels.add(new Panel(UIDGenerator.genNextID())); // TODO Set
+																	// panel ID
 			}
 		} else if (getPanelCount() > targetPanelCount) {
 			for (int i = getPanelCount(); i >= targetPanelCount; i--) {
@@ -108,6 +125,20 @@ public class PanelGroup {
 			panels.remove(panel);
 		}
 
+	}
+
+	/**
+	 * @return the isActive
+	 */
+	public boolean isActive() {
+		return isActive;
+	}
+
+	/**
+	 * @param isActive the isActive to set
+	 */
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	/**
@@ -150,35 +181,35 @@ public class PanelGroup {
 			this.panels.add(new Panel(UIDGenerator.genNextID()));
 		}
 	}
-	
+
 	public Panel[] getPanels() {
 		return panels.toArray(new Panel[0]);
 	}
-	
+
 	public Panel getPanel(String ID) {
 		for (Panel panel : panels) {
-			if(panel.getID().equals(ID)) {
+			if (panel.getID().equals(ID)) {
 				return panel;
 			}
 		}
 		return null;
 	}
-	
+
 	public int getOccupiedPanels() {
 		int occupied = 0;
 		for (Panel panel : panels) {
-			if(PanelState.hasOrder(panel.getStatus())) {
+			if (PanelState.hasOrder(panel.getStatus())) {
 				occupied++;
 			}
 		}
 		return occupied;
 	}
-	
+
 	/**
 	 * @return the userID
 	 */
 	public String getUserID() {
 		return userID;
 	}
-	
+
 }

@@ -132,7 +132,7 @@ public class DBGrade {
 				ResultSet results = DBConnetcor.executeQuery(query);
 				List<Grade> search = Arrays.asList(ObjectConverter.convertToGrades(results));
 				for (Grade grade : search) {
-					if (!grade.matchesAny(grades.toArray(new Grade[0])))
+					if (!grade.equalsAny(grades.toArray(new Grade[0])))
 						grades.add(grade);
 				}
 			}

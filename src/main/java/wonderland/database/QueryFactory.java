@@ -18,8 +18,7 @@ public class QueryFactory {
 		return String.format("INSERT INTO %s.%s (%s,%s,%s,%s) VALUES (\"%s\",\"%s\",\"%s\",\"%s\");",
 				DBVariables.DB_KEYSPACE, DBVariables.BOOKS_TABLE, DBVariables.BOOKS_ID, DBVariables.BOOKS_NAME,
 				DBVariables.BOOKS_SUBJECT, DBVariables.BOOKS_COVER, book.getID(), book.getName(),
-				book.getSubject().getName(), book.getCover());
-
+				book.getSubject().getName(), book.getCoverPath());
 	}
 
 	public static String getBookSingleUpdateQuery(String ID, String criteria, String value) {
@@ -32,7 +31,7 @@ public class QueryFactory {
 		return String.format("UPDATE %s.%s SET %s = \"%s\", %s = \"%s\", %s = \"%s\", %s = \"%s\" WHERE %s = \"%s\";",
 				DBVariables.DB_KEYSPACE, DBVariables.BOOKS_TABLE, DBVariables.BOOKS_ID, book.getID(),
 				DBVariables.BOOKS_NAME, book.getName(), DBVariables.BOOKS_SUBJECT, book.getSubject().getName(),
-				DBVariables.BOOKS_COVER, book.getCover(), DBVariables.BOOKS_ID, book.getID());
+				DBVariables.BOOKS_COVER, book.getCoverPath(), DBVariables.BOOKS_ID, book.getID());
 
 	}
 
@@ -97,7 +96,7 @@ public class QueryFactory {
 				DBVariables.DB_KEYSPACE, DBVariables.GRADES_TABLE, DBVariables.GRADES_NAME,
 				DBVariables.GRADES_SHORTNAME, DBVariables.GRADES_BOOKITEMS, DBVariables.GRADES_BOOKGROUPS,
 				grade.getName(), grade.getShortName(), grade.getBooks().getName(),
-				Grade.getBookGroupsAsString(grade.getBookGroups()));
+				grade.getBookGroupsAsJSon());
 	}
 
 	public static String getGradeSingleUpdateQuery(String name, String criteria, String value) {
@@ -109,8 +108,8 @@ public class QueryFactory {
 		return String.format("UPDATE %s.%s SET %s = \"%s\", %s = \"%s\", %s = \"%s\", %s = \"%s\" WHERE %s = \"%s\";",
 				DBVariables.DB_KEYSPACE, DBVariables.GRADES_TABLE, DBVariables.GRADES_NAME, grade.getName(),
 				DBVariables.GRADES_SHORTNAME, grade.getShortName(), DBVariables.GRADES_BOOKITEMS,
-				grade.getBooks().getName(), DBVariables.GRADES_BOOKGROUPS,
-				Grade.getBookGroupsAsString(grade.getBookGroups()), DBVariables.GRADES_NAME, grade.getName());
+				grade.getBooksAsJSon(), DBVariables.GRADES_BOOKGROUPS,
+				grade.getBookGroupsAsJSon(), DBVariables.GRADES_NAME, grade.getName());
 	}
 
 	public static String getGradeDeleteQuery(String name) {

@@ -6,9 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import main.java.wonderland.main.Settings;
 
 public class DBConnetcor {
+	
+	private static Logger log = LogManager.getLogger(DBConnetcor.class.getName());
 	
 	private static Connection connection;
 
@@ -17,7 +23,7 @@ public class DBConnetcor {
 			connection = DriverManager.getConnection(url, user , password);
 			System.out.println("Connected to Database.");
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			log.log(Level.ERROR, "Connection failed: " + e.getMessage());
 		}
 	}
 	
@@ -32,7 +38,7 @@ public class DBConnetcor {
 			statement = connection.createStatement();
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.log(Level.ERROR, " Database Update failed: " + e.getMessage());
 		}
 	}
 	
@@ -45,7 +51,7 @@ public class DBConnetcor {
 			String queryString = query;
 			results = statement.executeQuery(queryString);
 		} catch (SQLException e) {
-			System.err.println(e.getMessage());
+			log.log(Level.ERROR, "Database Query failed: " + e.getMessage());
 		}
 		return results;
 	}

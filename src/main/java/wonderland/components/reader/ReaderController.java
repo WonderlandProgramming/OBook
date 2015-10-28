@@ -3,6 +3,10 @@ package main.java.wonderland.components.reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import main.java.wonderland.general.core.OrderEntry;
 
 /**
@@ -15,6 +19,8 @@ import main.java.wonderland.general.core.OrderEntry;
  */
 public class ReaderController {
 
+	private static Logger log = LogManager.getLogger(ReaderController.class.getName());
+	
 	private OrderQueue queue;
 	private List<PanelGroup> panelsGroups = new ArrayList<>();
 
@@ -24,6 +30,7 @@ public class ReaderController {
 	 * @param page the associated web controller page object
 	 */
 	public ReaderController() {
+		log.log(Level.INFO, "Starting OBook ReaderController Service.");
 		this.queue = new OrderQueue(this, 500);
 
 		Thread timestamps = new Thread(new Runnable() {
@@ -43,18 +50,14 @@ public class ReaderController {
 			}
 		});
 		timestamps.start();
-	}
-
-	public OrderEntry getNextOrder() {
-		// TODO Auto-generated method stub
-		return null;
+		log.log(Level.INFO, "OBook ReaderController Service initialized.");
 	}
 
 	public PanelGroup getFreePanelGroup() {
 		PanelGroup group = null;
 		int leastAmount = Integer.MAX_VALUE;
 		for (PanelGroup panelGroup : panelsGroups) {
-			if (panelGroup.getFreePanel() != null) {
+			if (panelGroup.isActive() && panelGroup.getFreePanel() != null) {
 				if (panelGroup.getOccupiedPanels() < leastAmount) {
 					leastAmount = panelGroup.getOccupiedPanels();
 					group = panelGroup;
@@ -76,6 +79,11 @@ public class ReaderController {
 				return panelGroup;
 			}
 		}
+		return null;
+	}
+	
+	public OrderEntry getNextOrder() {
+		// TODO sort for Timestamp descending
 		return null;
 	}
 

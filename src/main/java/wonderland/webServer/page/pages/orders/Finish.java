@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import main.java.wonderland.database.action.DBOrderEntry;
+import main.java.wonderland.database.criteria.OrderEntryCriteria;
 import main.java.wonderland.general.core.Book;
 import main.java.wonderland.general.core.Order;
+import main.java.wonderland.general.core.OrderStatus;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
 import main.java.wonderland.webServer.page.BasePage;
@@ -56,8 +59,14 @@ public class Finish extends BasePage {
 			}
 			map.put("orderID", orderID);
 			
-			Book[] bookArray = {};
-			Order o = null; // = Ordermanager.findLatestByID(orderID);
+			Order[] ordersInCheckOut = DBOrderEntry.getOrderEntries(OrderStatus.CHECKOUT.toString(), true, OrderEntryCriteria.STATUS); // = Ordermanager.findLatestByID(orderID);
+			Order o = null;
+			for (Order order : ordersInCheckOut) {
+				if(order.getNumber() == orderID){
+					o = order;
+					break;
+				}
+			}
 			
 			if(o != null){
 				HashMap<String, Object> currentOrder = new HashMap<>();
@@ -65,7 +74,7 @@ public class Finish extends BasePage {
 				
 				List<Object> books = new ArrayList<>();
 				for (Book book: o.getBooks()) {
-					//books.add(book.getAsWebElement(null));
+					books.add(book.getAsWebElement());
 				}
 				HashMap<String, Object> demoBook = new HashMap<>();
 				demoBook.put("amount", 10);

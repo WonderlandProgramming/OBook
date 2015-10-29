@@ -38,7 +38,7 @@ public class WebServer {
 	private static HashMap<String, User> userList = new HashMap<>();
 
 	public WebServer() {
-		
+
 		log.info("WebServer is now starting.");
 		port(getAssignedPort());
 		

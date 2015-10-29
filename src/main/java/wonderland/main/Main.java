@@ -8,6 +8,7 @@ import main.java.wonderland.components.reader.ReaderController;
 import main.java.wonderland.components.writer.WriterController;
 import main.java.wonderland.database.DBConnetcor;
 import main.java.wonderland.general.core.Book;
+import main.java.wonderland.webServer.WebServer;
 
 /**
  * Application Main class.
@@ -36,6 +37,7 @@ public class Main {
 		
 		rc.addPanelGroup("001", 1);
 
+		new WebServer();
 	}
 
 }

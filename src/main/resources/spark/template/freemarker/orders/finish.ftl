@@ -48,24 +48,14 @@
 						    <#if order.books??>
 								  	<table>
 								    	<colgroup>
-								    		<col width="25">
 								    		<col width="200">
-								    		<col width="100">
-								    		<col width="100">
+								    		<col width="200">
 								  		</colgroup>
-								  		<tr>
-								    			<td>5</td>
-								    			<td>Mathe für Anfänger</td>
-								    			<td>Mathematik</td>
-								    			<td>Naturwissenschaften</td>
-								 		 </tr>
 								  	<#list order.books as book>
-								  			<tr>
-								    			<td>${book.amount}</td>
-								    			<td>${book.name}</td>
-								    			<td>${book.subject}</td>
-								    			<td>${book.category}</td>
-								 		 	</tr>
+								  		 <tr>
+								    		<td>${book.name}</td>
+								    		<td>${book.subject}</td>
+								 		 </tr>
 									</#list>
 								  </table>
 							  </#if>

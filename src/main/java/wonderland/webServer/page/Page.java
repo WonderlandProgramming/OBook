@@ -8,8 +8,6 @@ import static spark.Spark.put;
 import java.util.HashMap;
 import java.util.Map;
 
-import main.java.wonderland.components.reader.ReaderController;
-import main.java.wonderland.components.writer.WriterController;
 import main.java.wonderland.webServer.WebServer;
 import main.java.wonderland.webServer.login.LoginLevel;
 import main.java.wonderland.webServer.login.User;
@@ -22,7 +20,7 @@ import spark.Route;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public abstract class Page {
-	
+		
 	private final String subPath;
 	private final String ftlPath;
 	private LoginLevel loginLevel;
@@ -81,7 +79,6 @@ public abstract class Page {
 				}
 				// No rights to acces with the current userrights
 				else if (WebServer.getUser(UIDinCookies).getLoginLevel().getLevel() < page.loginLevel.getLevel()) {
-					// TODO ACCESS DENIED Message
 					response.redirect("/dashboard");
 					return;
 				} else {

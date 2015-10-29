@@ -191,7 +191,7 @@ public class Book extends Serial{
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("id", getID());
 		map.put("name", getName());
-		map.put("subject", getSubject());
+		map.put("subject", getSubject().getName());
 		map.put("coverPath", getCoverPath());
 		map.put("valid", isValid());
 		return map;

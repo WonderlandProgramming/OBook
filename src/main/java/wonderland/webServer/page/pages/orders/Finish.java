@@ -45,6 +45,7 @@ public class Finish extends BasePage {
 			// Aktuelle order auf null setzten
 			map.put("orderUID", null);
 			map.put("orderID", -1);
+			map.put("order", null);
 		}
 
 		if (postObjects.get("button_AuftragFertigstellen") != null) {
@@ -65,7 +66,6 @@ public class Finish extends BasePage {
 				map.put("order", null);
 				// Order absenden
 				map.put("orderID", -1);
-
 				map.put("orderUID", null);
 			}
 		}

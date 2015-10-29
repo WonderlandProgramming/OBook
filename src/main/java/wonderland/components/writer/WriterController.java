@@ -13,6 +13,12 @@ public class WriterController {
 	
 	private static Logger log = LogManager.getLogger(WriterController.class.getName());
 	
+	private final static WriterController writerController = new WriterController();
+	
+	public static WriterController instance(){
+		return writerController;
+	}
+	
 	private ListControl listControl;
 	
 	/**

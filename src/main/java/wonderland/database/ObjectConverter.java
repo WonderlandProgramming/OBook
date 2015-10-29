@@ -56,6 +56,6 @@ public class ObjectConverter {
 	
 	public static OrderEntry[] convertToOrderEntry(ResultSet results) {
 		// TODO
-		return null;
+		return new OrderEntry[0];
 	}
 }

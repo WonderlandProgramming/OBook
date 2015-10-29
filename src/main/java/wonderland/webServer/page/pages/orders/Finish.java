@@ -90,7 +90,7 @@ public class Finish extends BasePage {
 					break;
 				}
 			}
-
+			
 			if (o != null) {
 				HashMap<String, Object> currentOrder = new HashMap<>();
 				currentOrder.put("grade", o.getGrade().getName());
